@@ -26,9 +26,7 @@ public class Blob {
         file = new File(name);
     }
 
-
-    public String getFileName()
-    {
+    public String getFileName() {
         return pathName;
     }
 
@@ -63,7 +61,6 @@ public class Blob {
 
         // System.out.println(words);
 
-        
     }
 
     public String getSha1(String input) throws NoSuchAlgorithmException { // credit to
@@ -77,9 +74,5 @@ public class Blob {
 
         return sb.toString();
     }
-
-
-
-
 
 }
