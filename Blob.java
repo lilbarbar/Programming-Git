@@ -26,6 +26,12 @@ public class Blob {
         file = new File(name);
     }
 
+
+    public String getFileName()
+    {
+        return pathName;
+    }
+
     public String fileContents() throws IOException // based off Chris' code in fileTOString since his code allows me to
                                                     // retrieve multiple lines
     {
@@ -43,7 +49,9 @@ public class Blob {
 
     public void makeFile() throws NoSuchAlgorithmException, IOException {
 
-        PrintWriter pw = new PrintWriter(getSha1(fileContents())); // found out online from Java Oracle and Danny and I
+        String blobFileName = getSha1(fileContents());
+
+        PrintWriter pw = new PrintWriter(blobFileName); // found out online from Java Oracle and Danny and I
         // disc
         // makes a file under fileName
 
@@ -55,6 +63,7 @@ public class Blob {
 
         // System.out.println(words);
 
+        
     }
 
     public String getSha1(String input) throws NoSuchAlgorithmException { // credit to
@@ -68,5 +77,9 @@ public class Blob {
 
         return sb.toString();
     }
+
+
+
+
 
 }
