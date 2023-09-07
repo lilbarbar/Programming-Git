@@ -51,7 +51,7 @@ public class Index {
 
             String s = "";
             for (HashMap.Entry<String, String> entry : blobs.entrySet()) {
-                s += entry.getKey() + " " + entry.getValue() + "\n";
+                s += entry.getKey() + " : " + entry.getValue() + "\n";
             }
 
             pw.print(s);
