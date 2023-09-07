@@ -12,18 +12,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.io.*;
+import java.util.zip.Deflater;
 
 public class Blob {
 
-    private Path p;
     private String pathName;
-    private File file;
 
     public Blob(String name) {
 
         this.pathName = name;
-        Path p = Paths.get(name);
-        file = new File(name);
+
     }
 
     public String getFileName() {
@@ -49,11 +47,19 @@ public class Blob {
 
         String blobFileName = getSha1(fileContents());
 
-        PrintWriter pw = new PrintWriter(blobFileName); // found out online from Java Oracle and Danny and I
+        PrintWriter pw = new PrintWriter(
+                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + blobFileName); // found out online
+                                                                                                   // from Java Oracle
+                                                                                                   // and Danny
+
+        // I
+        // "C://user/bari/"
         // disc
         // makes a file under fileName
 
         String words = fileContents();
+
+        // StringCompressor.compressString(words);
 
         pw.print(words);
 
