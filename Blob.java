@@ -59,9 +59,9 @@ public class Blob {
 
         String words = fileContents();
 
-        // StringCompressor.compressString(words);
-
-        pw.print(words);
+        byte[] info = StringCompressor.compressString(words);
+        // not sure if I did it right
+        pw.print(info);
 
         pw.close(); // releases the info
 
