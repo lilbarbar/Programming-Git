@@ -20,7 +20,7 @@ public class GitTester {
         index.add("balls3.txt");
 
         index.printBlobs();
-        index.remove("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/balls2.txt");
+        index.remove("./balls2.txt");
 
     }
 }
