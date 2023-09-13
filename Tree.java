@@ -1,3 +1,9 @@
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -37,9 +43,12 @@ public class Tree {
             String temp = "";
             for (String s : blobs) {
                 temp = s.substring(50);
-                if (temp.equals(type))
+                if (temp.equals(type)) {
                     blobs.remove(s);
-                return true;
+                    return true;
+                } else {
+                    temp = "";
+                }
             }
         } else {
             String temp = "";
@@ -66,10 +75,15 @@ public class Tree {
         return false;
     }
 
-    public void save() throws NoSuchAlgorithmException {
+    public void save() throws NoSuchAlgorithmException, IOException {
         if (numberOfCommits < calculateNumberOfCommits()) {
+            numberOfCommits = calculateNumberOfCommits();
             String SHA1 = generateSHA1();
-
+            String objectsFolderPath = "objects";
+            Path objectFilePath = Paths.get(objectsFolderPath, SHA1);
+            String stringOfCommits = returnStringOfCommits();
+            byte[] originalString = stringOfCommits.getBytes();
+            Files.write(objectFilePath, originalString);
         }
     }
 
@@ -94,5 +108,28 @@ public class Tree {
             sbuffer.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sbuffer.toString();
+    }
+
+    public String returnStringOfCommits() {
+        StringBuilder sb = new StringBuilder("");
+        int numBlobs = blobs.size();
+        int numTrees = trees.size();
+        for (int i = 0; i < numBlobs; i++) {
+            if (i != numBlobs - 1) {
+                sb.append(blobs.get(i) + "\n");
+            } else if (numTrees >= 1) {
+                sb.append(blobs.get(i) + "\n");
+            } else {
+                sb.append(blobs.get(i));
+            }
+        }
+        for (int i = 0; i < numTrees; i++) {
+            if (i != numTrees - 1) {
+                sb.append(trees.get(i) + "\n");
+            } else {
+                sb.append(trees.get(i));
+            }
+        }
+        return sb.toString();
     }
 }
