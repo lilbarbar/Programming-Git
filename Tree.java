@@ -98,7 +98,7 @@ public class Tree {
         for (String s : trees) {
             sb.append(s);
         }
-        for (String s : trees) {
+        for (String s : blobs) {
             sb.append(s);
         }
         String input = sb.toString();
