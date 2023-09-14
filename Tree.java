@@ -92,6 +92,7 @@ public class Tree {
         return trees.size() + blobs.size();
     }
 
+    // generate the sha1 hash
     public String generateSHA1() throws NoSuchAlgorithmException {
         StringBuilder sb = new StringBuilder("");
         for (String s : trees) {
@@ -110,6 +111,7 @@ public class Tree {
         return sbuffer.toString();
     }
 
+    // returns a giant string of all the commits withing blobs array and trees array
     public String returnStringOfCommits() {
         StringBuilder sb = new StringBuilder("");
         int numBlobs = blobs.size();
