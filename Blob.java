@@ -48,9 +48,9 @@ public class Blob {
         String blobFileName = getSha1(fileContents());
 
         PrintWriter pw = new PrintWriter(
-                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\Objects" + blobFileName); // found
-                                                                                                                    // out
-                                                                                                                    // online
+                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\" + blobFileName); // found
+                                                                                                                      // out
+                                                                                                                      // online
         // from Java Oracle
         // and Danny
 
@@ -59,11 +59,8 @@ public class Blob {
         // disc
         // makes a file under fileName
 
-        String words = fileContents();
-
-        byte[] info = StringCompressor.compressString(words);
         // not sure if I did it right
-        pw.print(info);
+        pw.print(fileContents());
 
         pw.close(); // releases the info
 

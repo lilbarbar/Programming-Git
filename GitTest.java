@@ -3,7 +3,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,9 +28,12 @@ public class GitTest {
     static String[] expectedSha = { "2e27b4d29c63a1242ee02973f5862cf26cf9679f",
             "d98d670ea7ca145dee0266961b8bf8ee5b12925a", "0a9d1240f29014f6677816388f4763e7fdc41445" };
 
-    @Test
-    @DisplayName("yes")
-    void setUpBeforeClass() throws Exception {
+    static String pathToObjectsFolder = "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects";
+
+    static String pathToIndexFolder = "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt";
+
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
         try {
             // Display the current working directory
             System.out.println("Current working directory: " + System.getProperty("user.dir"));
@@ -73,7 +78,7 @@ public class GitTest {
     void testInitialize() throws Exception {
         // check if the file index exists and the path to the objects folder exists
         File file = new File("index.txt");
-        Path path = Paths.get("objects");
+        Path path = Paths.get(pathToObjectsFolder);
         assertTrue(file.exists());
         assertTrue(Files.exists(path));
     }
@@ -89,17 +94,17 @@ public class GitTest {
         }
 
         // check the sha1 hashes and the correct location (inside the objects folder)
-        Path p1 = Paths.get("objects", expectedSha[0]);
-        Path p2 = Paths.get("objects", expectedSha[1]);
-        Path p3 = Paths.get("objects", expectedSha[2]);
+        Path p1 = Paths.get(pathToObjectsFolder, expectedSha[0]);
+        Path p2 = Paths.get(pathToObjectsFolder, expectedSha[1]);
+        Path p3 = Paths.get(pathToObjectsFolder, expectedSha[2]);
         assertTrue(Files.exists(p1));
         assertTrue(Files.exists(p2));
         assertTrue(Files.exists(p3));
 
         // check if the file contents are the same
         String content1 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        String content2 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        String content3 = readFile(p1.toString(), StandardCharsets.UTF_8);
+        String content2 = readFile(p2.toString(), StandardCharsets.UTF_8);
+        String content3 = readFile(p3.toString(), StandardCharsets.UTF_8);
         assertEquals(expectedContents[0], content1);
         assertEquals(expectedContents[1], content2);
         assertEquals(expectedContents[2], content3);
@@ -114,10 +119,20 @@ public class GitTest {
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
-        Path indexPath = Paths.get("index.txt");
-        String indexContents = readFile(indexPath.toString(), StandardCharsets.UTF_8);
+        Path indexPath = Paths
+                .get(pathToIndexFolder);
+        String indexContents = "";
+        StringBuilder sb = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader(pathToIndexFolder));
+        while (br.ready()) {
+            sb.append(br.readLine());
+        }
+        br.close();
+        indexContents = sb.toString();
         for (int i = 0; i < 2; i++) {
-            assertTrue(indexContents.contains(expectedContents[i]));
+            System.out.println(indexContents);
+            assertTrue(indexContents.contains(expectedSha[i]));
         }
     }
 
@@ -133,11 +148,13 @@ public class GitTest {
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
-        Path path1 = Paths.get("objects", expectedSha[1]);
-        Path path2 = Paths.get("objects", expectedSha[2]);
-        Path pathToActualFile2 = Paths.get("testFile2.txt");
-        Path pathToActualFile3 = Paths.get("testFile3.txt");
-        Path indexPath = Paths.get("index.txt");
+        Path path1 = Paths.get(pathToObjectsFolder, expectedSha[1]);
+        Path path2 = Paths.get(pathToObjectsFolder, expectedSha[2]);
+        Path pathToActualFile2 = Paths
+                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
+        Path pathToActualFile3 = Paths
+                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
+        Path indexPath = Paths.get(pathToIndexFolder);
 
         // test if the file still exists in objects folder
         assertTrue(Files.exists(path1));

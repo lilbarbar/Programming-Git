@@ -48,7 +48,8 @@ public class Index {
 
     public void printBlobs() {
         try {
-            PrintWriter pw = new PrintWriter("Index.txt");
+            PrintWriter pw = new PrintWriter(
+                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
 
             String s = "";
             for (HashMap.Entry<String, String> entry : blobs.entrySet()) {
