@@ -10,6 +10,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,13 +32,13 @@ public class GitTest {
         PrintWriter pw1 = new PrintWriter("junit_example_file_data1.txt");
         pw1.print("test file contents one");
         PrintWriter pw2 = new PrintWriter("junit_example_file_data2.txt");
-        pw1.print("test file contents two");
+        pw2.print("test file contents two");
         PrintWriter pw3 = new PrintWriter("junit_example_file_data3.txt");
-        pw1.print("test file contents three");
+        pw3.print("test file contents three");
         PrintWriter pw4 = new PrintWriter("junit_example_file_data4.txt");
-        pw1.print("test file contents four");
+        pw4.print("test file contents four");
         PrintWriter pw5 = new PrintWriter("junit_example_file_data5.txt");
-        pw1.print("test file contents five");
+        pw5.print("test file contents five");
         Path objectsPath = Paths.get("Objects");
         Files.delete(objectsPath);
         Path indexPath = Paths.get("index.txt");
@@ -77,12 +78,8 @@ public class GitTest {
     void testCreateBlob() throws Exception {
         try {
             Index index = new Index();
-            // create the 5 blobs
-            index.add("junit_example_file_data1.txt");
-            index.add("junit_example_file_data2.txt");
-            index.add("junit_example_file_data3.txt");
-            index.add("junit_example_file_data4.txt");
-            index.add("junit_example_file_data5.txt");
+            // create the 5 blobs for testing
+            addBlobs(index);
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
@@ -117,12 +114,8 @@ public class GitTest {
     void testIndexBlob() throws Exception {
         try {
             Index index = new Index();
-            // create the 5 blobs
-            index.add("junit_example_file_data1.txt");
-            index.add("junit_example_file_data2.txt");
-            index.add("junit_example_file_data3.txt");
-            index.add("junit_example_file_data4.txt");
-            index.add("junit_example_file_data5.txt");
+            // create the 5 blobs for testing
+            addBlobs(index);
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
@@ -131,6 +124,21 @@ public class GitTest {
         for (int i = 0; i < 4; i++) {
             assertTrue(indexContents.contains(contents[i]));
         }
+    }
+
+    @Test
+    @DisplayName("[4] Test if blobs are properly removed after calling remove method.")
+    void testBlobRemove() throws Exception {
+        try {
+            Index index = new Index();
+            // create the 5 blobs for testing
+            addBlobs(index);
+            // remove the second and fourth file
+            index.remove("junit_example_file_data2.txt");
+            index.remove("junit_example_file_data4.txt");
+        } catch (Exception e) {
+            System.out.println("An error ocurred: " + e.getMessage());
+        }
 
     }
 
@@ -138,5 +146,14 @@ public class GitTest {
     public static String readFile(String path, Charset encoding) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, encoding);
+    }
+
+    // add blobs
+    public static void addBlobs(Index name) throws Exception {
+        name.add("junit_example_file_data1.txt");
+        name.add("junit_example_file_data2.txt");
+        name.add("junit_example_file_data3.txt");
+        name.add("junit_example_file_data4.txt");
+        name.add("junit_example_file_data5.txt");
     }
 }
