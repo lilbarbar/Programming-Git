@@ -60,5 +60,97 @@
                 "values": ["input"]
             }
         ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "add",
+                "parameters": ["String"],
+                "values": ["type"]
+            },
+            {
+                "methodName": "remove",
+                "parameters": ["String"],
+                "values": ["type"]
+            },
+            {
+                "methodName": "save",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "calculateNumberOfCommits",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "generateSHA1",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "returnStringOfCommits",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "GitTest",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "setUpBeforeClass",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "tearDownAfterClass",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testInitialize",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testCreateBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testIndexBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testRemoveBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "readFile",
+                "parameters": ["String", "Charset"],
+                "values": ["path", "encoding"]
+            },
+            {
+                "methodName": "addBlobs",
+                "parameters": ["Index"],
+                "values": ["name"]
+            }
+        ]
     }
 ]

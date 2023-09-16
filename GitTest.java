@@ -62,7 +62,7 @@ public class GitTest {
     }
 
     @Test
-    @DisplayName("[8] Test if initialize and objects are created correctly")
+    @DisplayName("[1] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
         Index index = new Index();
         index.init();
@@ -74,7 +74,7 @@ public class GitTest {
     }
 
     @Test
-    @DisplayName("[15] Test if creating a blob works. 5 for sha, 5 for file contents, 5 for correct location")
+    @DisplayName("[2] Test if creating a blob works. 5 for sha, 5 for file contents, 5 for correct location")
     void testCreateBlob() throws Exception {
         try {
             Index index = new Index();
@@ -128,18 +128,32 @@ public class GitTest {
 
     @Test
     @DisplayName("[4] Test if blobs are properly removed after calling remove method.")
-    void testBlobRemove() throws Exception {
+    void testRemoveBlob() throws Exception {
         try {
             Index index = new Index();
             // create the 5 blobs for testing
             addBlobs(index);
-            // remove the second and fourth file
+            // remove the second and last file
             index.remove("junit_example_file_data2.txt");
-            index.remove("junit_example_file_data4.txt");
+            index.remove("junit_example_file_data5.txt");
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
-
+        Path path1 = Paths.get("objects", sha1[1]);
+        Path path2 = Paths.get("objects", sha1[4]);
+        Path pathToActualFile1 = Paths.get("junit_example_file_data2.txt");
+        Path pathToActualFile2 = Paths.get("junit_example_file_data5.txt");
+        Path indexPath = Paths.get("index.txt");
+        // test if the file still exists in objects folder
+        assertTrue(Files.exists(path1));
+        assertTrue(Files.exists(path2));
+        // test if the file still exists in the workspace
+        assertTrue(Files.exists(pathToActualFile1));
+        assertTrue(Files.exists(pathToActualFile2));
+        String indexContents = readFile(indexPath.toString(), StandardCharsets.UTF_8);
+        // test if the index file no longer contains the file
+        assertTrue(!indexContents.contains(sha1[1]));
+        assertTrue(!indexContents.contains(sha1[4]));
     }
 
     // techiedelight.com
