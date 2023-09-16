@@ -63,15 +63,30 @@ public class GitTest {
         }
     }
 
-    // @AfterAll
-    // static void tearDownAfterClass() throws Exception {
-    // Path textPath = Paths.get("junit_example_file_data.txt");
-    // Files.delete(textPath);
-    // Path objectsPath = Paths.get("Objects");
-    // Files.delete(objectsPath);
-    // Path indexPath = Paths.get("index.txt");
-    // Files.delete(indexPath);
-    // }
+    // delete all the added files in setupBeforeClass ()
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+        Path textPath1 = Paths
+                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile1.txt");
+        Path textPath2 = Paths
+                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
+        Path textPath3 = Paths
+                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
+        Files.delete(textPath1);
+        Files.delete(textPath2);
+        Files.delete(textPath3);
+        Path objectsPath = Paths.get(pathToObjectsFolder);
+        // path to each file in the objects folder
+        Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
+        Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
+        Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
+        Files.delete(p1);
+        Files.delete(p2);
+        Files.delete(p3);
+        Files.delete(objectsPath);
+        Path indexPath = Paths.get(pathToIndexFolder);
+        Files.delete(indexPath);
+    }
 
     @Test
     @DisplayName("[1] Test if initialize and objects are created correctly")
