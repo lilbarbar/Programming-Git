@@ -1,6 +1,7 @@
 import java.util.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,51 +20,59 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class GitTest {
-    public static File testFile1;
-    public static File testFile2;
-    public static File testFile3;
     public static Index index;
 
     static String[] expectedContents = { "some content in file 1", "some content in file 2", "some content in file 3" };
     static String[] expectedSha = { "2e27b4d29c63a1242ee02973f5862cf26cf9679f",
             "d98d670ea7ca145dee0266961b8bf8ee5b12925a", "0a9d1240f29014f6677816388f4763e7fdc41445" };
 
-    @BeforeAll
-    static void setUpBeforeClass() throws Exception {
-        // initialize index
-        index = new Index();
-        index.init();
+    @Test
+    @DisplayName("yes")
+    void setUpBeforeClass() throws Exception {
+        try {
+            // Display the current working directory
+            System.out.println("Current working directory: " + System.getProperty("user.dir"));
 
-        // create three test files in the workspace with content
-        testFile1 = new File("testFile1.txt");
-        testFile2 = new File("testFile2.txt");
-        testFile3 = new File("testFile3.txt");
-        FileWriter fw1 = new FileWriter(testFile1);
-        FileWriter fw2 = new FileWriter(testFile2);
-        FileWriter fw3 = new FileWriter(testFile3);
-        fw1.write("some content in file 1");
-        fw2.write("some content in file 2");
-        fw3.write("some content in file 3");
-        fw1.close();
-        fw2.close();
-        fw3.close();
+            // initialize index
+            index = new Index();
+            index.init();
+
+            // create three test files in the workspace with content
+            PrintWriter pw1 = new PrintWriter(
+                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile1.txt");
+            PrintWriter pw2 = new PrintWriter(
+                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
+            PrintWriter pw3 = new PrintWriter(
+                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
+
+            pw1.print("some content in file 1");
+            pw2.print("some content in file 2");
+            pw3.print("some content in file 3");
+
+            pw1.close();
+            pw2.close();
+            pw3.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception occurred: " + e.getMessage());
+        }
     }
 
-    @AfterAll
-    static void tearDownAfterClass() throws Exception {
-        Path textPath = Paths.get("junit_example_file_data.txt");
-        Files.delete(textPath);
-        Path objectsPath = Paths.get("Objects");
-        Files.delete(objectsPath);
-        Path indexPath = Paths.get("index.txt");
-        Files.delete(indexPath);
-    }
+    // @AfterAll
+    // static void tearDownAfterClass() throws Exception {
+    // Path textPath = Paths.get("junit_example_file_data.txt");
+    // Files.delete(textPath);
+    // Path objectsPath = Paths.get("Objects");
+    // Files.delete(objectsPath);
+    // Path indexPath = Paths.get("index.txt");
+    // Files.delete(indexPath);
+    // }
 
     @Test
     @DisplayName("[1] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
         // check if the file index exists and the path to the objects folder exists
-        File file = new File("index");
+        File file = new File("index.txt");
         Path path = Paths.get("objects");
         assertTrue(file.exists());
         assertTrue(Files.exists(path));

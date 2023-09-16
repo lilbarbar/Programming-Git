@@ -17,13 +17,13 @@ public class Index {
 
     public void init() throws FileNotFoundException // credit from stackoverflow.com
     {
-        File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\Objects");
+        File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects");
         if (!objects.exists()) {
             objects.mkdirs();
         }
 
         PrintWriter pw = new PrintWriter(
-                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\Index");
+                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
 
         String words = "";
         pw.print(words);
