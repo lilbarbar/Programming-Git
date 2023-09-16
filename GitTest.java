@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.Charset;
@@ -18,37 +19,34 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class GitTest {
-    // expected sha1 values after creating blobs
-    static String[] sha1 = { "5a1fd7b393a24123b1b7dda32a0272ed490a89d6", "dcb33305c60ffa6a5b38dd58172dbdf04c2c7b48",
-            "c766df3281b44ba77ed851278fd9398ffac07c58", "0b5b083670146187f7dd447b04ca08079a54a1a8",
-            "7e3e7a1554dc8dc7f3659fea93063e2763edd4bc" };
+    public static File testFile1;
+    public static File testFile2;
+    public static File testFile3;
+    public static Index index;
 
-    // pre blob expected contents
-    static String[] contents = { "test file contents 1", "test file contents 2", "test file contents 3",
-            "test file contents 4", "test file contents 5" };
+    static String[] expectedContents = { "some content in file 1", "some content in file 2", "some content in file 3" };
+    static String[] expectedSha = { "2e27b4d29c63a1242ee02973f5862cf26cf9679f",
+            "d98d670ea7ca145dee0266961b8bf8ee5b12925a", "0a9d1240f29014f6677816388f4763e7fdc41445" };
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        PrintWriter pw1 = new PrintWriter("junit_example_file_data1.txt");
-        pw1.print("test file contents one");
-        PrintWriter pw2 = new PrintWriter("junit_example_file_data2.txt");
-        pw2.print("test file contents two");
-        PrintWriter pw3 = new PrintWriter("junit_example_file_data3.txt");
-        pw3.print("test file contents three");
-        PrintWriter pw4 = new PrintWriter("junit_example_file_data4.txt");
-        pw4.print("test file contents four");
-        PrintWriter pw5 = new PrintWriter("junit_example_file_data5.txt");
-        pw5.print("test file contents five");
-        Path objectsPath = Paths.get("Objects");
-        Files.delete(objectsPath);
-        Path indexPath = Paths.get("index.txt");
-        Files.delete(indexPath);
-        pw1.close();
-        pw2.close();
-        pw3.close();
-        pw4.close();
-        pw5.close();
+        // initialize index
+        index = new Index();
+        index.init();
 
+        // create three test files in the workspace with content
+        testFile1 = new File("testFile1.txt");
+        testFile2 = new File("testFile2.txt");
+        testFile3 = new File("testFile3.txt");
+        FileWriter fw1 = new FileWriter(testFile1);
+        FileWriter fw2 = new FileWriter(testFile2);
+        FileWriter fw3 = new FileWriter(testFile3);
+        fw1.write("some content in file 1");
+        fw2.write("some content in file 2");
+        fw3.write("some content in file 3");
+        fw1.close();
+        fw2.close();
+        fw3.close();
     }
 
     @AfterAll
@@ -64,9 +62,7 @@ public class GitTest {
     @Test
     @DisplayName("[1] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
-        Index index = new Index();
-        index.init();
-        // check if the file exists
+        // check if the file index exists and the path to the objects folder exists
         File file = new File("index");
         Path path = Paths.get("objects");
         assertTrue(file.exists());
@@ -74,55 +70,45 @@ public class GitTest {
     }
 
     @Test
-    @DisplayName("[2] Test if creating a blob works. 5 for sha, 5 for file contents, 5 for correct location")
+    @DisplayName("[2] Test if creating a blob works. 3 for sha and location, 3 for file contents")
     void testCreateBlob() throws Exception {
         try {
-            Index index = new Index();
-            // create the 5 blobs for testing
+            // create the 3 blobs for testing
             addBlobs(index);
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
 
         // check the sha1 hashes and the correct location (inside the objects folder)
-        Path p1 = Paths.get("objects", sha1[0]);
-        Path p2 = Paths.get("objects", sha1[1]);
-        Path p3 = Paths.get("objects", sha1[2]);
-        Path p4 = Paths.get("objects", sha1[3]);
-        Path p5 = Paths.get("objects", sha1[4]);
+        Path p1 = Paths.get("objects", expectedSha[0]);
+        Path p2 = Paths.get("objects", expectedSha[1]);
+        Path p3 = Paths.get("objects", expectedSha[2]);
         assertTrue(Files.exists(p1));
         assertTrue(Files.exists(p2));
         assertTrue(Files.exists(p3));
-        assertTrue(Files.exists(p4));
-        assertTrue(Files.exists(p5));
 
         // check if the file contents are the same
         String content1 = readFile(p1.toString(), StandardCharsets.UTF_8);
         String content2 = readFile(p1.toString(), StandardCharsets.UTF_8);
         String content3 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        String content4 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        String content5 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        assertEquals(contents[0], content1);
-        assertEquals(contents[1], content2);
-        assertEquals(contents[2], content3);
-        assertEquals(contents[3], content4);
-        assertEquals(contents[4], content5);
+        assertEquals(expectedContents[0], content1);
+        assertEquals(expectedContents[1], content2);
+        assertEquals(expectedContents[2], content3);
     }
 
     @Test
     @DisplayName("[3] Test if adding a blob updates the index file.")
     void testIndexBlob() throws Exception {
         try {
-            Index index = new Index();
-            // create the 5 blobs for testing
+            // create the 3 blobs for testing
             addBlobs(index);
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
         Path indexPath = Paths.get("index.txt");
         String indexContents = readFile(indexPath.toString(), StandardCharsets.UTF_8);
-        for (int i = 0; i < 4; i++) {
-            assertTrue(indexContents.contains(contents[i]));
+        for (int i = 0; i < 2; i++) {
+            assertTrue(indexContents.contains(expectedContents[i]));
         }
     }
 
@@ -130,30 +116,30 @@ public class GitTest {
     @DisplayName("[4] Test if blobs are properly removed after calling remove method.")
     void testRemoveBlob() throws Exception {
         try {
-            Index index = new Index();
-            // create the 5 blobs for testing
+            // create the 3 blobs for testing
             addBlobs(index);
             // remove the second and last file
-            index.remove("junit_example_file_data2.txt");
-            index.remove("junit_example_file_data5.txt");
+            index.remove("testFile2.txt");
+            index.remove("testFile3.txt");
         } catch (Exception e) {
             System.out.println("An error ocurred: " + e.getMessage());
         }
-        Path path1 = Paths.get("objects", sha1[1]);
-        Path path2 = Paths.get("objects", sha1[4]);
-        Path pathToActualFile1 = Paths.get("junit_example_file_data2.txt");
-        Path pathToActualFile2 = Paths.get("junit_example_file_data5.txt");
+        Path path1 = Paths.get("objects", expectedSha[1]);
+        Path path2 = Paths.get("objects", expectedSha[2]);
+        Path pathToActualFile2 = Paths.get("testFile2.txt");
+        Path pathToActualFile3 = Paths.get("testFile3.txt");
         Path indexPath = Paths.get("index.txt");
+
         // test if the file still exists in objects folder
         assertTrue(Files.exists(path1));
         assertTrue(Files.exists(path2));
         // test if the file still exists in the workspace
-        assertTrue(Files.exists(pathToActualFile1));
         assertTrue(Files.exists(pathToActualFile2));
+        assertTrue(Files.exists(pathToActualFile3));
         String indexContents = readFile(indexPath.toString(), StandardCharsets.UTF_8);
         // test if the index file no longer contains the file
-        assertTrue(!indexContents.contains(sha1[1]));
-        assertTrue(!indexContents.contains(sha1[4]));
+        assertTrue(!indexContents.contains(expectedSha[1]));
+        assertTrue(!indexContents.contains(expectedSha[2]));
     }
 
     // techiedelight.com
@@ -164,10 +150,8 @@ public class GitTest {
 
     // add blobs
     public static void addBlobs(Index name) throws Exception {
-        name.add("junit_example_file_data1.txt");
-        name.add("junit_example_file_data2.txt");
-        name.add("junit_example_file_data3.txt");
-        name.add("junit_example_file_data4.txt");
-        name.add("junit_example_file_data5.txt");
+        name.add("testFile1.txt");
+        name.add("testFile2.txt");
+        name.add("testFile3.txt");
     }
 }

@@ -15,6 +15,8 @@ public class Tree {
 
     public Tree() {
         this.numberOfCommits = 0;
+        this.blobs = new ArrayList<String>();
+        this.trees = new ArrayList<String>();
     }
 
     // if type does not have "tree : " or "blob : " it must not be a valid string
@@ -22,10 +24,10 @@ public class Tree {
     // if type contains "tree : " add it to the array list of trees and vice versa
     public boolean add(String type) {
         if (type.contains("tree : ") || type.contains("blob : ")) {
-            if (type.contains("tree : ")) {
+            if (type.contains("tree : ") && !trees.contains(type)) {
                 trees.add(type);
                 return true;
-            } else if (type.contains("blob : ")) {
+            } else if (type.contains("blob : ") && !blobs.contains(type)) {
                 blobs.add(type);
                 return true;
             }
@@ -39,6 +41,7 @@ public class Tree {
     // note that if type is a sha1 file, you must loop through both the trees and
     // the blob array list
     public boolean remove(String type) {
+        // removes a blob with its name
         if (type.contains(".txt")) {
             String temp = "";
             for (String s : blobs) {
@@ -51,6 +54,7 @@ public class Tree {
                 }
             }
         } else {
+            // removing a tree with its hash
             String temp = "";
             for (String s : trees) {
                 temp = s.substring(7);
@@ -61,6 +65,7 @@ public class Tree {
                     temp = "";
                 }
             }
+            // trying to remove a blob with its hash
             for (String s : blobs) {
                 temp = s.substring(7, 50);
                 if (temp.equals(type)) {
@@ -75,15 +80,16 @@ public class Tree {
         return false;
     }
 
-    public void save() throws NoSuchAlgorithmException, IOException {
-        if (numberOfCommits < calculateNumberOfCommits()) {
+    public void save() throws Exception {
+        if (numberOfCommits != calculateNumberOfCommits()) {
             numberOfCommits = calculateNumberOfCommits();
             String SHA1 = generateSHA1();
-            String objectsFolderPath = "objects";
-            Path objectFilePath = Paths.get(objectsFolderPath, SHA1);
+            Path objectFilePath = Paths.get("objects", SHA1);
             String stringOfCommits = returnStringOfCommits();
             byte[] originalString = stringOfCommits.getBytes();
             Files.write(objectFilePath, originalString);
+        } else {
+            throw new Exception("Cannot save when you have not added a new tree or blob");
         }
     }
 
