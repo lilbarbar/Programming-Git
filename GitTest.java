@@ -66,23 +66,34 @@ public class GitTest {
     // delete all the added files in setupBeforeClass ()
     @AfterAll
     static void tearDownAfterClass() throws Exception {
+        Path tree1 = Paths.get(
+                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\10f228098914b028963a208273e41be47b4f417d");
+        Path tree2 = Paths.get(
+                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\6016cd7c79df2958d3bc74b3dee21c7fe994e592");
+
         Path textPath1 = Paths
                 .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile1.txt");
         Path textPath2 = Paths
                 .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
         Path textPath3 = Paths
                 .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
-        Files.delete(textPath1);
-        Files.delete(textPath2);
-        Files.delete(textPath3);
         Path objectsPath = Paths.get(pathToObjectsFolder);
-        // path to each file in the objects folder
-        Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
-        Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
-        Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
-        Files.delete(p1);
-        Files.delete(p2);
-        Files.delete(p3);
+        if (Files.exists(textPath1)) {
+            Files.delete(textPath1);
+            Files.delete(textPath2);
+            Files.delete(textPath3);
+            // path to each file in the objects folder
+            Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
+            Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
+            Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
+            Files.delete(p1);
+            Files.delete(p2);
+            Files.delete(p3);
+        }
+        if (Files.exists(tree1)) {
+            Files.delete(tree1);
+            Files.delete(tree2);
+        }
         Files.delete(objectsPath);
         Path indexPath = Paths.get(pathToIndexFolder);
         Files.delete(indexPath);
@@ -181,6 +192,53 @@ public class GitTest {
         // test if the index file no longer contains the file
         assertTrue(!indexContents.contains(expectedSha[1]));
         assertTrue(!indexContents.contains(expectedSha[2]));
+    }
+
+    @Test
+    @DisplayName("[5] Test if objects in trees are added properly.")
+    void testAddTree() throws Exception {
+        Tree tree = new Tree();
+
+        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
+        tree.add("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt");
+
+        tree.save();
+
+        StringBuilder sb = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader(pathToObjectsFolder + "\\" + "10f228098914b028963a208273e41be47b4f417d"));
+        while (br.ready()) {
+            sb.append((char) br.read());
+        }
+        br.close();
+        assertTrue(sb.toString().contains("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt"));
+        assertTrue(sb.toString().contains("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt"));
+    }
+
+    @Test
+    @DisplayName("[6] Test if objects in trees are removed properly.")
+    void testRemoveTree() throws Exception {
+        Tree tree = new Tree();
+
+        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
+        tree.add("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt");
+
+        tree.remove("testFile1.txt");
+        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
+
+        tree.remove("0a9d1240f29014f6677816388f4763e7fdc41445");
+
+        tree.save();
+
+        StringBuilder sb = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader(pathToObjectsFolder + "\\" + "6016cd7c79df2958d3bc74b3dee21c7fe994e592"));
+        while (br.ready()) {
+            sb.append((char) br.read());
+        }
+        br.close();
+        assertTrue(sb.toString().contains("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt"));
+        assertTrue(!(sb.toString()).contains("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt"));
     }
 
     // techiedelight.com

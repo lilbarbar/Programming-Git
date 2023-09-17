@@ -67,7 +67,8 @@ public class Tree {
             }
             // trying to remove a blob with its hash
             for (String s : blobs) {
-                temp = s.substring(7, 50);
+                temp = s.substring(7, 47);
+                System.out.println(temp);
                 if (temp.equals(type)) {
                     blobs.remove(s);
                     return true;
@@ -84,9 +85,9 @@ public class Tree {
         if (numberOfCommits != calculateNumberOfCommits()) {
             numberOfCommits = calculateNumberOfCommits();
             String SHA1 = generateSHA1();
-            Path objectFilePath = Paths.get("objects", SHA1);
-            String stringOfCommits = returnStringOfCommits();
-            byte[] originalString = stringOfCommits.getBytes();
+            Path objectFilePath = Paths
+                    .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects", SHA1);
+            byte[] originalString = returnStringOfCommits().getBytes();
             Files.write(objectFilePath, originalString);
         } else {
             throw new Exception("Cannot save when you have not added a new tree or blob");
