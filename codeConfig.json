@@ -142,6 +142,16 @@
                 "values": []
             },
             {
+                "methodName": "testAddTree",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testRemoveTree",
+                "parameters": [],
+                "values": []
+            },
+            {
                 "methodName": "readFile",
                 "parameters": ["String", "Charset"],
                 "values": ["path", "encoding"]
