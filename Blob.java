@@ -14,6 +14,7 @@ import java.util.*;
 import java.io.*;
 import java.util.zip.Deflater;
 
+//with Help from Mr. Lopez, the internet, Daniel and Aidan
 public class Blob {
 
     private String pathName;
@@ -28,8 +29,10 @@ public class Blob {
         return pathName;
     }
 
-    public String fileContents() throws IOException // based off Chris' code in fileTOString since his code allows me to
-                                                    // retrieve multiple lines
+    // based off Chris' code in fileTOString since his code allows me to retrieve
+    // multiple lines
+    public String fileContents() throws IOException
+
     {
         StringBuilder record = new StringBuilder("");
         BufferedReader br = new BufferedReader(new FileReader(pathName));
@@ -47,18 +50,35 @@ public class Blob {
 
         String blobFileName = getSha1(fileContents());
 
-        PrintWriter pw = new PrintWriter(
-                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\" + blobFileName); // found
-                                                                                                                      // out
-                                                                                                                      // online
-        // from Java Oracle
-        // and Danny
+// <<<<<<< master
+//         PrintWriter pw = new PrintWriter(
+//                 "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\" + blobFileName); // found
+//                                                                                                                       // out
+//                                                                                                                       // online
+//         // from Java Oracle
+//         // and Danny
+// =======
+//         PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
+//                                                                        // from Java Oracle
+//                                                                        // Print writer makes a file while File file =
+//                                                                        // newe File gets an already made file.
+//                                                                        // and Danny
+// >>>>>>> master
 
         // I
         // "C://user/bari/"
         // disc
         // makes a file under fileName
 
+// <<<<<<< master
+// =======
+//         String words = fileContents();
+
+//         byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
+//                                                               // original file data instead of the actual original
+//                                                               // string
+
+// >>>>>>> master
         // not sure if I did it right
         pw.print(fileContents());
 

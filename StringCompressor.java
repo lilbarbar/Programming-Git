@@ -1,6 +1,9 @@
 import java.util.zip.Deflater;
 
 public class StringCompressor { // FOUND ONLINE AND COMPLETELY COPIED FROM BITO.AI FYIII
+    //not my code OBVIOUSLY
+    //used for zip compression
+    
 
     public static byte[] compressString(String data) {
         byte[] input = data.getBytes();
