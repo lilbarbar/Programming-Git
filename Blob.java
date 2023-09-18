@@ -50,25 +50,37 @@ public class Blob {
 
         String blobFileName = getSha1(fileContents());
 
-        PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
-                                                                       // from Java Oracle
-                                                                       // Print writer makes a file while File file =
-                                                                       // newe File gets an already made file.
-                                                                       // and Danny
+// <<<<<<< master
+//         PrintWriter pw = new PrintWriter(
+//                 "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\" + blobFileName); // found
+//                                                                                                                       // out
+//                                                                                                                       // online
+//         // from Java Oracle
+//         // and Danny
+// =======
+//         PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
+//                                                                        // from Java Oracle
+//                                                                        // Print writer makes a file while File file =
+//                                                                        // newe File gets an already made file.
+//                                                                        // and Danny
+// >>>>>>> master
 
         // I
         // "C://user/bari/"
         // disc
         // makes a file under fileName
 
-        String words = fileContents();
+// <<<<<<< master
+// =======
+//         String words = fileContents();
 
-        byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
-                                                              // original file data instead of the actual original
-                                                              // string
+//         byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
+//                                                               // original file data instead of the actual original
+//                                                               // string
 
+// >>>>>>> master
         // not sure if I did it right
-        pw.print(info);
+        pw.print(fileContents());
 
         pw.close(); // releases the info
 

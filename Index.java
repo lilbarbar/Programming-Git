@@ -17,12 +17,21 @@ public class Index {
 
     public void init() throws FileNotFoundException // credit from stackoverflow.com
     {
-        File objects = new File("./Objects");
+// <<<<<<< master
+//         File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects");
+// =======
+//         File objects = new File("./Objects");
+// >>>>>>> master
         if (!objects.exists()) {
             objects.mkdirs();
         }
 
-        PrintWriter pw = new PrintWriter("./Index");
+// <<<<<<< master
+//         PrintWriter pw = new PrintWriter(
+//                 "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
+// =======
+//         PrintWriter pw = new PrintWriter("./Index");
+// >>>>>>> master
 
         String words = "";
         pw.print(words);
@@ -47,7 +56,8 @@ public class Index {
 
     public void printBlobs() {
         try {
-            PrintWriter pw = new PrintWriter("Index.txt");
+            PrintWriter pw = new PrintWriter(
+                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
 
             String s = "";
             for (HashMap.Entry<String, String> entry : blobs.entrySet()) {

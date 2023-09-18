@@ -20,7 +20,11 @@ public class GitTester {
         index.add("balls3.txt");
 
         index.printBlobs();
-        index.remove("./balls2.txt");
+// <<<<<<< master
+//         index.remove("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\balls2.txt");
+// =======
+//         index.remove("./balls2.txt");
+// >>>>>>> master
 
     }
 }

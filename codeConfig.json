@@ -1,0 +1,166 @@
+[
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "init",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "add",
+                "parameters": ["String"],
+                "values": ["name"]
+            },
+            {
+                "methodName": "remove",
+                "parameters": ["String"],
+                "values": ["fileName"]
+            },
+            {
+                "methodName": "printBlobs",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": ["String"],
+                "values": ["pathName"]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "getFileName",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "fileContents",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "makeFile",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "getSha1",
+                "parameters": ["String"],
+                "values": ["input"]
+            }
+        ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "add",
+                "parameters": ["String"],
+                "values": ["type"]
+            },
+            {
+                "methodName": "remove",
+                "parameters": ["String"],
+                "values": ["type"]
+            },
+            {
+                "methodName": "save",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "calculateNumberOfCommits",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "generateSHA1",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "returnStringOfCommits",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "GitTest",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "setUpBeforeClass",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "tearDownAfterClass",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testInitialize",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testCreateBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testIndexBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testRemoveBlob",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testAddTree",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "testRemoveTree",
+                "parameters": [],
+                "values": []
+            },
+            {
+                "methodName": "readFile",
+                "parameters": ["String", "Charset"],
+                "values": ["path", "encoding"]
+            },
+            {
+                "methodName": "addBlobs",
+                "parameters": ["Index"],
+                "values": ["name"]
+            }
+        ]
+    }
+]
