@@ -17,21 +17,21 @@ public class Index {
 
     public void init() throws FileNotFoundException // credit from stackoverflow.com
     {
-// <<<<<<< master
-//         File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects");
-// =======
-//         File objects = new File("./Objects");
-// >>>>>>> master
+        // <<<<<<< master
+        File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects");
+        // =======
+        File objects = new File("./Objects");
+        // >>>>>>> master
         if (!objects.exists()) {
             objects.mkdirs();
         }
 
-// <<<<<<< master
-//         PrintWriter pw = new PrintWriter(
-//                 "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
-// =======
-//         PrintWriter pw = new PrintWriter("./Index");
-// >>>>>>> master
+        // <<<<<<< master
+        PrintWriter pw = new PrintWriter(
+                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
+        // =======
+        // PrintWriter pw = new PrintWriter("./Index");
+        // >>>>>>> master
 
         String words = "";
         pw.print(words);
