@@ -186,7 +186,7 @@ public class Tree {
                 File temp = new File(s);
                 char sLast = s.charAt(s.length() - 1);
                 Path p = Paths.get(s);
-                if (temp.isDirectory()) {
+                if (!temp.isDirectory()) {
                     System.out.println("Blob...");
                     Blob b1 = new Blob(directoryPath + s);
                     output += "Blob : " + b1.getSha1(b1.fileContents()) + " : " + s + " \n";
