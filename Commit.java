@@ -102,6 +102,11 @@ public class Commit {
         pw.print(author + "\n" + getDate() + "\n" + summary);
 
         pw.close();
+
+        File head = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Head");
+        PrintWriter pw2 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Head");
+        pw2.print(currentSHA);
+        pw2.close();
     }
 
     public void commitFile() throws NoSuchAlgorithmException, IOException {

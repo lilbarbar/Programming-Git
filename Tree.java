@@ -184,17 +184,21 @@ public class Tree {
 
             for (String s : contents) {
                 File temp = new File(s);
-                if (!temp.isDirectory()) {
-                    Blob b = new Blob(directoryPath + s);
-                    output += "Blob : " + b.getSha1(b.fileContents()) + " : " + s + " \n";
+                char sLast = s.charAt(s.length() - 1);
+                Path p = Paths.get(s);
+                if (temp.isDirectory()) {
+                    System.out.println("Blob...");
+                    Blob b1 = new Blob(directoryPath + s);
+                    output += "Blob : " + b1.getSha1(b1.fileContents()) + " : " + s + " \n";
                     System.out.println(s);
 
                 } else {
+                    System.out.println("Tree...");
                     Tree childTree = new Tree();
-                    Blob b = new Blob(directoryPath + s);
+                    Blob b2 = new Blob(directoryPath + s);
+                    String childSHA = childTree.addDirectory(directoryPath + s);
 
-                    output += "Tree : " + b.getSha1(b.fileContents()) + " : " + s + "\n";
-                    childTree.addDirectory(directoryPath + s);
+                    output += "Tree : " + childSHA + " : " + s + "\n";
                 }
 
             }
