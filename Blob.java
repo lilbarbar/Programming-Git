@@ -31,8 +31,8 @@ public class Blob {
 
     // based off Chris' code in fileTOString since his code allows me to retrieve
     // multiple lines
-    public String fileContents() throws IOException
-
+    public String fileContents() throws IOException // based off Chris' code in fileTOString since his code allows me to
+                                                    // retrieve multiple lines
     {
         StringBuilder record = new StringBuilder("");
         BufferedReader br = new BufferedReader(new FileReader(pathName));
@@ -50,46 +50,45 @@ public class Blob {
 
         String blobFileName = getSha1(fileContents());
 
-// <<<<<<< master
-//         PrintWriter pw = new PrintWriter(
-//                 "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\" + blobFileName); // found
-//                                                                                                                       // out
-//                                                                                                                       // online
-//         // from Java Oracle
-//         // and Danny
-// =======
-        PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
-                                                                       // from Java Oracle
-                                                                       // Print writer makes a file while File file =
-                                                                       // newe File gets an already made file.
-                                                                       // and Danny
-// >>>>>>> master
+        PrintWriter pw = new PrintWriter(
+                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/" + blobFileName); // found
+        // // out
+        // // online
+        // // from Java Oracle
+        // // and Danny
+        // =======
+        // PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out
+        // online
+        // from Java Oracle
+        // Print writer makes a file while File file =
+        // newe File gets an already made file.
+        // and Danny
 
         // I
         // "C://user/bari/"
         // disc
         // makes a file under fileName
 
-// <<<<<<< master
-// =======
+        // <<<<<<< master
+        // =======
         String words = fileContents();
 
         byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
-//                                                               // original file data instead of the actual original
-//                                                               // string
+        // // original file data instead of the actual original
+        // // string
 
-// >>>>>>> master
+        // >>>>>>> master
         // not sure if I did it right
-        pw.print(fileContents());
+        pw.print(words);
 
         pw.close(); // releases the info
 
-        // System.out.println(words);
+        System.out.println(words);
 
     }
 
-    public String getSha1(String input) throws NoSuchAlgorithmException { // credit to
-                                                                          // http://www.sha1-online.com/sha1-java/
+    public static String getSha1(String input) throws NoSuchAlgorithmException { // credit to
+        // http://www.sha1-online.com/sha1-java/
         MessageDigest mDigest = MessageDigest.getInstance("SHA1");
         byte[] result = mDigest.digest(input.getBytes());
         StringBuffer sb = new StringBuffer();

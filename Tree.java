@@ -174,36 +174,40 @@ public class Tree {
 
     }
 
-    public String addDirectory (String directoryPath)
-    {
-        File directory = new File (directoryPath);
-        String contents[] = directory.list(); //gotten from internet --> https://www.tutorialspoint.com/how-to-get-list-of-all-files-folders-from-a-folder-in-java#:~:text=The%20List()%20method,of%20the%20files%20and%20directories.
+    public String addDirectory(String directoryPath) throws NoSuchAlgorithmException, IOException {
+        File directory = new File(directoryPath);
+        if (directory.isDirectory()) {
+            String contents[] = directory.list(); // gotten from internet -->
+            // https://www.tutorialspoint.com/how-to-get-list-of-all-files-folders-from-a-folder-in-java#:~:text=The%20List()%20method,of%20the%20files%20and%20directories.
 
+            String output = "";
 
-        String output = "";
+            for (String s : contents) {
+                File temp = new File(s);
+                if (!temp.isDirectory()) {
+                    Blob b = new Blob(directoryPath + s);
+                    output += "Blob : " + b.getSha1(b.fileContents()) + " : " + s + " \n";
+                    System.out.println(s);
 
-        for (String s : contents)
-        {
-            File temp = new File (s);
-            if (!temp.isDirectory())
-            {
-                Blob b = new Blob (s);
-                output += "Blob : " + b.getSha1(output) + " : " + s + " \n";
+                } else {
+                    Tree childTree = new Tree();
+                    Blob b = new Blob(directoryPath + s);
+
+                    output += "Tree : " + b.getSha1(b.fileContents()) + " : " + s + "\n";
+                    childTree.addDirectory(directoryPath + s);
+                }
 
             }
-            else
-            {
-                
-            }
-            
+
+            String outputSHA = Blob.getSha1(output);
+            PrintWriter pw = new PrintWriter(
+                    "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + outputSHA);
+            pw.print(output);
+            pw.close();
+
+            return Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + outputSHA);
 
         }
-
-
-
-
-
-
-        return 
+        return null;
     }
 }
