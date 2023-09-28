@@ -1,6 +1,12 @@
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,7 +19,16 @@ public class Tree {
     private ArrayList<String> blobs;
     private int numberOfCommits;
 
-    public Tree() {
+    public Tree() throws FileNotFoundException {
+
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
+        if (!file.exists()) {
+            file.mkdir();
+        }
+
+        File treeIndex = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+        PrintWriter pw = new PrintWriter(treeIndex);
+
         this.numberOfCommits = 0;
         this.blobs = new ArrayList<String>();
         this.trees = new ArrayList<String>();
@@ -140,5 +155,55 @@ public class Tree {
             }
         }
         return sb.toString();
+    }
+
+    public String allContents() throws IOException { // got from prev shared code
+
+        StringBuilder resultStringBuilder = new StringBuilder();
+        StringBuilder record = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree"));
+
+        while (br.ready()) {
+            record.append((char) br.read());
+        }
+
+        br.close();
+        String s = record.toString();
+        return s;
+
+    }
+
+    public String addDirectory (String directoryPath)
+    {
+        File directory = new File (directoryPath);
+        String contents[] = directory.list(); //gotten from internet --> https://www.tutorialspoint.com/how-to-get-list-of-all-files-folders-from-a-folder-in-java#:~:text=The%20List()%20method,of%20the%20files%20and%20directories.
+
+
+        String output = "";
+
+        for (String s : contents)
+        {
+            File temp = new File (s);
+            if (!temp.isDirectory())
+            {
+                Blob b = new Blob (s);
+                output += "Blob : " + b.getSha1(output) + " : " + s + " \n";
+
+            }
+            else
+            {
+                
+            }
+            
+
+        }
+
+
+
+
+
+
+        return 
     }
 }

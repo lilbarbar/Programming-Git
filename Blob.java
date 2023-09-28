@@ -58,11 +58,11 @@ public class Blob {
 //         // from Java Oracle
 //         // and Danny
 // =======
-//         PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
-//                                                                        // from Java Oracle
-//                                                                        // Print writer makes a file while File file =
-//                                                                        // newe File gets an already made file.
-//                                                                        // and Danny
+        PrintWriter pw = new PrintWriter("./Objects/" + blobFileName); // found out online
+                                                                       // from Java Oracle
+                                                                       // Print writer makes a file while File file =
+                                                                       // newe File gets an already made file.
+                                                                       // and Danny
 // >>>>>>> master
 
         // I
@@ -72,9 +72,9 @@ public class Blob {
 
 // <<<<<<< master
 // =======
-//         String words = fileContents();
+        String words = fileContents();
 
-//         byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
+        byte[] info = StringCompressor.compressString(words); // files contain the zip compressed version of the
 //                                                               // original file data instead of the actual original
 //                                                               // string
 
