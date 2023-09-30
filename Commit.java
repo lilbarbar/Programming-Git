@@ -24,9 +24,32 @@ public class Commit {
     private int totalCommits = 0;
     private int commitIndex = 0;
 
+    public void swapTreeAndIndex() throws Exception {
+        String words = Index.indexContents();
+        System.out.println(words);
+
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
+        PrintWriter pw = new PrintWriter(file);
+
+        pw.print(words);
+        pw.close();
+
+        // PrintWriter indexClearer = new PrintWriter(
+        // "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
+        // indexClearer.print("");
+        // indexClearer.close();
+    }
+
     public Commit(String author, String summary) throws Exception {
 
         makeTree();
+
+        swapTreeAndIndex();
 
         this.author = author;
         this.summary = summary;

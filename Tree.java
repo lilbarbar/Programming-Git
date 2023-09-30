@@ -183,9 +183,13 @@ public class Tree {
             String output = "";
 
             for (String s : contents) {
-                File temp = new File(s);
-                char sLast = s.charAt(s.length() - 1);
-                Path p = Paths.get(s);
+                System.out.println("String output: " + s);
+                File temp = new File(directoryPath + s);
+                System.out.println(s + " is a directory? " + temp.isDirectory());
+
+                // char sLast = s.charAt(s.length() - 1);
+                // Path p = Paths.get(s);
+
                 if (!temp.isDirectory()) {
                     System.out.println("Blob...");
                     Blob b1 = new Blob(directoryPath + s);
@@ -196,7 +200,7 @@ public class Tree {
                     System.out.println("Tree...");
                     Tree childTree = new Tree();
                     Blob b2 = new Blob(directoryPath + s);
-                    String childSHA = childTree.addDirectory(directoryPath + s);
+                    String childSHA = childTree.addDirectory(directoryPath + s + "/");
 
                     output += "Tree : " + childSHA + " : " + s + "\n";
                 }

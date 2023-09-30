@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -9,29 +11,17 @@ public class Index {
 
     File tree;
 
+    String startPath = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
+
     HashMap<String, String> blobs = new HashMap();
 
-    public Index() {
+    File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
 
-    }
+    public Index() throws IOException {
 
-    public void init() throws FileNotFoundException // credit from stackoverflow.com
-    {
-// <<<<<<< master
-       // File objects = new File("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects");
-// =======
-         File objects = new File("./Objects");
-// >>>>>>> master
-        if (!objects.exists()) {
-            objects.mkdirs();
-        }
+        index.createNewFile();
 
-// <<<<<<< master
-        //PrintWriter pw = new PrintWriter(
-               // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
-// =======
-         PrintWriter pw = new PrintWriter("./Index");
-// >>>>>>> master
+        PrintWriter pw = new PrintWriter(index);
 
         String words = "";
         pw.print(words);
@@ -40,7 +30,17 @@ public class Index {
 
     }
 
+    public void init() throws IOException {
+
+        File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects");
+        if (!objects.exists()) {
+            objects.mkdirs();
+        }
+
+    }
+
     public void add(String name) throws NoSuchAlgorithmException, IOException {
+
         Blob blob = new Blob(name);
         blob.makeFile();
 
@@ -57,11 +57,21 @@ public class Index {
     public void printBlobs() {
         try {
             PrintWriter pw = new PrintWriter(
-                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt");
+                    "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
 
             String s = "";
+
             for (HashMap.Entry<String, String> entry : blobs.entrySet()) {
-                s += entry.getKey() + " : " + entry.getValue() + "\n";
+
+                File file = new File(startPath + entry.getKey());
+                if (!file.isDirectory()) {
+                    s += "Blob : " + entry.getValue() + " : " + entry.getKey() + "\n";
+
+                } else {
+                    s += "Tree : " + entry.getValue() + " : " + entry.getKey() + "\n";
+
+                }
+
             }
 
             pw.print(s);
@@ -71,5 +81,19 @@ public class Index {
 
         }
 
+    }
+
+    public static String indexContents() throws Exception {
+        StringBuilder record = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index"));
+
+        while (br.ready()) {
+            record.append((char) br.read());
+        }
+
+        br.close();
+        String s = record.toString();
+        return s;
     }
 }
