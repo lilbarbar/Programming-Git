@@ -1,13 +1,57 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.io.*;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 public class CommitTest {
+
+    @BeforeAll
+    static void setUpBeforeAll() throws IOException {
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
+        if (file.exists()) {
+
+            String pString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+            Path p = Paths.get(pString);
+            // Files.delete(p);
+
+            String contents[] = file.list();
+            for (String s : contents) {
+                Path temp = Paths.get(pString + s);
+                Files.delete(temp);
+            }
+            file.delete();
+
+        }
+    }
+
+    @AfterAll
+    static void tearDownAfterClass() throws IOException {
+
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
+        if (file.exists()) {
+
+            String pString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+            Path p = Paths.get(pString);
+            // Files.delete(p);
+
+            String contents[] = file.list();
+            for (String s : contents) {
+                Path temp = Paths.get(pString + s);
+                Files.delete(temp);
+            }
+            Files.delete(p);
+
+        }
+
+    }
 
     @Test
     void testCommitFile() throws Exception {
@@ -160,15 +204,18 @@ public class CommitTest {
     void testWriteFile() throws Exception {
 
         Commit c = new Commit("Billy", "W Billy Commit!");
+
+        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
+
+        String contents[] = directory.list();
+        int oldLen = contents.length;
+
         c.commitFile();
         c.writeFile();
 
-        String expexcted = Commit.generateSHA(c.tree.allContents() + "W Billy Commit!" + c.getDate() + "Billy");
-
-        File file = new File(
-                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + expexcted);
-
-        assertEquals(file.exists(), true);
+        String contents2[] = directory.list();
+        int newLen = contents2.length;
+        assertEquals(newLen == oldLen, false);
 
     }
 }

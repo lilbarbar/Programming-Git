@@ -1,12 +1,13 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-import java.util.ArrayList;
 import java.security.*;
 
 public class Commit {
@@ -130,6 +131,19 @@ public class Commit {
         PrintWriter pw2 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Head");
         pw2.print(currentSHA);
         pw2.close();
+
+        PrintWriter pw3 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+
+        if (prevSHA != null) {
+            pw3.print("Tree: " + prevSHA + " (prev)");
+        } else {
+            pw3.print("Previous Tree: none");
+
+        }
+        pw3.close();
+
+        System.out.println(prevSHA + " " + currentSHA + " " + nextSHA);
+
     }
 
     public void commitFile() throws NoSuchAlgorithmException, IOException {
@@ -201,6 +215,32 @@ public class Commit {
     public String makeTree() throws NoSuchAlgorithmException, IOException {
         tree = new Tree();
         return tree.generateSHA1();
+    }
+
+    public String shaToTree(String sha) throws Exception {
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + sha);
+
+        String treeContents = getContents(file);
+
+        int indexOfNewLine = treeContents.indexOf("\n");
+
+        return generateSHA(treeContents.substring(0, indexOfNewLine));
+
+    }
+
+    public static String getContents(File f) throws IOException {
+        StringBuilder resultStringBuilder = new StringBuilder();
+        StringBuilder record = new StringBuilder("");
+        BufferedReader br = new BufferedReader(
+                new FileReader(f));
+
+        while (br.ready()) {
+            record.append((char) br.read());
+        }
+
+        br.close();
+        String s = record.toString();
+        return s;
     }
 
 }

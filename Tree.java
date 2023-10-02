@@ -19,15 +19,22 @@ public class Tree {
     private ArrayList<String> blobs;
     private int numberOfCommits;
 
-    public Tree() throws FileNotFoundException {
+    public Tree() throws IOException {
 
         File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
         if (!file.exists()) {
             file.mkdir();
         }
 
+        File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
+        if (!index.exists()) {
+            index.createNewFile();
+        }
+
         File treeIndex = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
-        PrintWriter pw = new PrintWriter(treeIndex);
+        if (!treeIndex.exists()) {
+            treeIndex.createNewFile();
+        }
 
         this.numberOfCommits = 0;
         this.blobs = new ArrayList<String>();
@@ -101,7 +108,7 @@ public class Tree {
             numberOfCommits = calculateNumberOfCommits();
             String SHA1 = generateSHA1();
             Path objectFilePath = Paths
-                    .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects", SHA1);
+                    .get("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects", SHA1);
             byte[] originalString = returnStringOfCommits().getBytes();
             Files.write(objectFilePath, originalString);
         } else {
@@ -169,7 +176,7 @@ public class Tree {
         }
 
         br.close();
-        String s = record.toString();
+        String s = record.toString() + trees.toString() + blobs.toString();
         return s;
 
     }

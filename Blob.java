@@ -51,7 +51,7 @@ public class Blob {
         String blobFileName = getSha1(fileContents());
 
         PrintWriter pw = new PrintWriter(
-                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/" + blobFileName); // found
+                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + blobFileName); // found
         // // out
         // // online
         // // from Java Oracle

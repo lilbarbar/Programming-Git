@@ -25,79 +25,89 @@ public class GitTest {
     static String[] expectedContents = { "some content in file 1", "some content in file 2", "some content in file 3" };
     static String[] expectedSha = { "2e27b4d29c63a1242ee02973f5862cf26cf9679f",
             "d98d670ea7ca145dee0266961b8bf8ee5b12925a", "0a9d1240f29014f6677816388f4763e7fdc41445" };
-    static String pathToObjectsFolder = "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects";
-    static String pathToIndexFolder = "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\index.txt";
+
+    static String pathToObjectsFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+    static String pathToIndexFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index";
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
-        try {
-            // Display the current working directory
-            System.out.println("Current working directory: " + System.getProperty("user.dir"));
-            // initialize index
-            index = new Index();
-            index.init();
-            // create three test files in the workspace with content
-            PrintWriter pw1 = new PrintWriter(
-                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile1.txt");
-            PrintWriter pw2 = new PrintWriter(
-                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
-            PrintWriter pw3 = new PrintWriter(
-                    "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
-            pw1.print("some content in file 1");
-            pw2.print("some content in file 2");
-            pw3.print("some content in file 3");
-            pw1.close();
-            pw2.close();
-            pw3.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Exception occurred: " + e.getMessage());
-        }
+        // try {
+        // // Display the current working directory
+        // System.out.println("Current working directory: " +
+        // System.getProperty("user.dir"));
+        // // initialize index
+        // index = new Index();
+        // index.init();
+        // // create three test files in the workspace with content
+        // PrintWriter pw1 = new PrintWriter(
+        // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile1.txt");
+        // PrintWriter pw2 = new PrintWriter(
+        // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile2.txt");
+        // PrintWriter pw3 = new PrintWriter(
+        // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile3.txt");
+        // pw1.print("some content in file 1");
+        // pw2.print("some content in file 2");
+        // pw3.print("some content in file 3");
+        // pw1.close();
+        // pw2.close();
+        // pw3.close();
+        // } catch (Exception e) {
+        // e.printStackTrace();
+        // fail("Exception occurred: " + e.getMessage());
+        // }
     }
 
     // delete all the added files in setupBeforeClass ()
     @AfterAll
     static void tearDownAfterClass() throws Exception {
-        Path tree1 = Paths.get(
-                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\10f228098914b028963a208273e41be47b4f417d");
-        Path tree2 = Paths.get(
-                "C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\objects\\6016cd7c79df2958d3bc74b3dee21c7fe994e592");
+        // Path tree1 = Paths.get(
+        // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\objects\\10f228098914b028963a208273e41be47b4f417d");
+        // Path tree2 = Paths.get(
+        // "C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\objects\\6016cd7c79df2958d3bc74b3dee21c7fe994e592");
 
-        Path textPath1 = Paths
-                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile1.txt");
-        Path textPath2 = Paths
-                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
-        Path textPath3 = Paths
-                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
-        Files.delete(textPath1);
-        Files.delete(textPath2);
-        Files.delete(textPath3);
-        Path objectsPath = Paths.get(pathToObjectsFolder);
-        // path to each file in the objects folder
-        Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
-        Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
-        Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
-        Files.delete(p1);
-        Files.delete(p2);
-        Files.delete(p3);
-        if (Files.exists(textPath1)) {
-            Files.delete(textPath1);
-            Files.delete(textPath2);
-            Files.delete(textPath3);
-            // path to each file in the objects folder
-            Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
-            Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
-            Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
-            Files.delete(p1);
-            Files.delete(p2);
-            Files.delete(p3);
-        }
-        if (Files.exists(tree1)) {
-            Files.delete(tree1);
-            Files.delete(tree2);
-        }
-        Files.delete(objectsPath);
-        Path indexPath = Paths.get(pathToIndexFolder);
+        // Path textPath1 = Paths
+        // .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile1.txt");
+        // Path textPath2 = Paths
+        // .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile2.txt");
+        // Path textPath3 = Paths
+        // .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics
+        // Repos\\Programming-Git-Bari\\testFile3.txt");
+        // Files.delete(textPath1);
+        // Files.delete(textPath2);
+        // Files.delete(textPath3);
+        // Path objectsPath = Paths.get(pathToObjectsFolder);
+        // // path to each file in the objects folder
+        // Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
+        // Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
+        // Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
+        // Files.delete(p1);
+        // Files.delete(p2);
+        // Files.delete(p3);
+        // if (Files.exists(textPath1)) {
+        // Files.delete(textPath1);
+        // Files.delete(textPath2);
+        // Files.delete(textPath3);
+        // // path to each file in the objects folder
+        // Path p1 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[0]);
+        // Path p2 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[1]);
+        // Path p3 = Paths.get(pathToObjectsFolder + "\\" + expectedSha[2]);
+        // Files.delete(p1);
+        // Files.delete(p2);
+        // Files.delete(p3);
+        // }
+        // if (Files.exists(tree1)) {
+        // Files.delete(tree1);
+        // Files.delete(tree2);
+        // }
+        // Files.delete(objectsPath);
+        // Path indexPath = Paths.get(pathToIndexFolder);
 
     }
 
@@ -105,7 +115,7 @@ public class GitTest {
     @DisplayName("[1] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
         // check if the file index exists and the path to the objects folder exists
-        File file = new File("index.txt");
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
         Path path = Paths.get(pathToObjectsFolder);
         assertTrue(file.exists());
         assertTrue(Files.exists(path));
@@ -114,83 +124,59 @@ public class GitTest {
     @Test
     @DisplayName("[2] Test if creating a blob works. 3 for sha and location, 3 for file contents")
     void testCreateBlob() throws Exception {
-        try {
-            // create the 3 blobs for testing
-            addBlobs(index);
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.getMessage());
-        }
-        // check the sha1 hashes and the correct location (inside the objects folder)
-        Path p1 = Paths.get(pathToObjectsFolder, expectedSha[0]);
-        Path p2 = Paths.get(pathToObjectsFolder, expectedSha[1]);
-        Path p3 = Paths.get(pathToObjectsFolder, expectedSha[2]);
-        assertTrue(Files.exists(p1));
-        assertTrue(Files.exists(p2));
-        assertTrue(Files.exists(p3));
-        // check if the file contents are the same
-        String content1 = readFile(p1.toString(), StandardCharsets.UTF_8);
-        String content2 = readFile(p2.toString(), StandardCharsets.UTF_8);
-        String content3 = readFile(p3.toString(), StandardCharsets.UTF_8);
-        assertEquals(expectedContents[0], content1);
-        assertEquals(expectedContents[1], content2);
-        assertEquals(expectedContents[2], content3);
+
+        Blob b1 = new Blob("yo.txt");
+        Blob b2 = new Blob("testout.txt");
+        Blob b3 = new Blob("jump.txt");
+
+        assertEquals(b1.getSha1(b1.fileContents()), "637d1f5c6e6d1be22ed907eb3d223d858ca396d8");
+        assertEquals(b2.getSha1(b2.fileContents()), "e0c9035898dd52fc65c41454cec9c4d2611bfb37");
+        assertEquals(b3.getSha1(b3.fileContents()), "a22e0d880ad1a84437fdf1e7f1b573b945f42bd5");
+
+        Index i = new Index();
+        i.add("yo.txt");
+        i.add("testout.txt");
+        i.add("jump.txt");
+
+        String s = Index.indexContents();
+        String blob1Hash = Blob.getSha1(b1.fileContents());
+        String blob2Hash = Blob.getSha1(b2.fileContents());
+        String blob3Hash = Blob.getSha1(b3.fileContents());
+
+        assertEquals(s.indexOf(blob1Hash) != -1, true);
+        assertEquals(s.indexOf(blob2Hash) != -1, true);
+        assertEquals(s.indexOf(blob3Hash) != -1, true);
+
     }
 
     @Test
     @DisplayName("[3] Test if adding a blob updates the index file.")
     void testIndexBlob() throws Exception {
-        try {
-            // create the 3 blobs for testing
-            addBlobs(index);
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.getMessage());
-        }
-        Path indexPath = Paths
-                .get(pathToIndexFolder);
-        String indexContents = "";
-        StringBuilder sb = new StringBuilder("");
-        BufferedReader br = new BufferedReader(
-                new FileReader(pathToIndexFolder));
-        while (br.ready()) {
-            sb.append(br.readLine());
-        }
-        br.close();
-        indexContents = sb.toString();
-        for (int i = 0; i < 2; i++) {
-            System.out.println(indexContents);
-            assertTrue(indexContents.contains(expectedSha[i]));
-        }
+
+        PrintWriter pw = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
+        pw.print("");
+
+        String s = Index.indexContents();
+        Index i = new Index();
+        i.add("yo.txt");
+        String s2 = Index.indexContents();
+
+        assertEquals(s.equals(s2), false);
     }
 
     @Test
     @DisplayName("[4] Test if blobs are properly removed after calling remove method.")
     void testRemoveBlob() throws Exception {
-        try {
-            // create the 3 blobs for testing
-            addBlobs(index);
-            // remove the second and last file
-            index.remove("testFile2.txt");
-            index.remove("testFile3.txt");
-        } catch (Exception e) {
-            System.out.println("An error ocurred: " + e.getMessage());
-        }
-        Path path1 = Paths.get(pathToObjectsFolder, expectedSha[1]);
-        Path path2 = Paths.get(pathToObjectsFolder, expectedSha[2]);
-        Path pathToActualFile2 = Paths
-                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile2.txt");
-        Path pathToActualFile3 = Paths
-                .get("C:\\Users\\danie\\OneDrive\\Desktop\\Topics Repos\\Programming-Git-Bari\\testFile3.txt");
-        Path indexPath = Paths.get(pathToIndexFolder);
-        // test if the file still exists in objects folder
-        assertTrue(Files.exists(path1));
-        assertTrue(Files.exists(path2));
-        // test if the file still exists in the workspace
-        assertTrue(Files.exists(pathToActualFile2));
-        assertTrue(Files.exists(pathToActualFile3));
-        String indexContents = readFile(indexPath.toString(), StandardCharsets.UTF_8);
-        // test if the index file no longer contains the file
-        assertTrue(!indexContents.contains(expectedSha[1]));
-        assertTrue(!indexContents.contains(expectedSha[2]));
+
+        Index i = new Index();
+        i.add("yo.txt");
+        i.add("jump.txt");
+        i.remove("jump.txt");
+        String s = Index.indexContents();
+
+        assertEquals(s.indexOf("jump.txt") == -1, true);
+        assertEquals(s.indexOf("yo.txt") == -1, false);
+
     }
 
     @Test
@@ -205,7 +191,7 @@ public class GitTest {
 
         StringBuilder sb = new StringBuilder("");
         BufferedReader br = new BufferedReader(
-                new FileReader(pathToObjectsFolder + "\\" + "10f228098914b028963a208273e41be47b4f417d"));
+                new FileReader(pathToObjectsFolder + "" + "10f228098914b028963a208273e41be47b4f417d"));
         while (br.ready()) {
             sb.append((char) br.read());
         }
@@ -231,7 +217,7 @@ public class GitTest {
 
         StringBuilder sb = new StringBuilder("");
         BufferedReader br = new BufferedReader(
-                new FileReader(pathToObjectsFolder + "\\" + "6016cd7c79df2958d3bc74b3dee21c7fe994e592"));
+                new FileReader(pathToObjectsFolder + "/" + "6016cd7c79df2958d3bc74b3dee21c7fe994e592"));
         while (br.ready()) {
             sb.append((char) br.read());
         }
