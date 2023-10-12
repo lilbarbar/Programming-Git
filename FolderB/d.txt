@@ -1,2 +1,1 @@
-/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/FolderA/a.txt
-/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/FolderB
+OwO

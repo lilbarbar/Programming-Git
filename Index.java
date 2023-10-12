@@ -15,9 +15,19 @@ public class Index {
 
     HashMap<String, String> blobs = new HashMap();
 
-    File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
+    File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+
+    File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Index");
 
     public Index() throws IOException {
+
+        if (!objects.exists()) {
+            objects.mkdir();
+        }
+
+        if (!index.exists()) {
+            index.createNewFile();
+        }
 
         index.createNewFile();
 

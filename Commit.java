@@ -14,11 +14,33 @@ public class Commit {
 
     private String author;
     private String summary;
+    /**
+     * @return the author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    
+
+    /**
+     * @return the summary
+     */
+    public String getSummary() {
+        return summary;
+    }
+
+    
+
+
     private String prevSHA;
-    private String currentSHA;
+    public String currentSHA;
+    private String currentTreeSHA;
     private String nextSHA;
     public Tree tree;
     private int indexOfCurrent;
+
+    static String inputString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
 
     ArrayList<String> hashes = new ArrayList<>();
 
@@ -29,7 +51,7 @@ public class Commit {
         String words = Index.indexContents();
         System.out.println(words);
 
-        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Tree");
 
         if (!file.exists()) {
             file.createNewFile();
@@ -50,7 +72,7 @@ public class Commit {
 
         makeTree();
 
-        swapTreeAndIndex();
+        // swapTreeAndIndex();
 
         this.author = author;
         this.summary = summary;
@@ -110,11 +132,11 @@ public class Commit {
         }
     }
 
-    public void writeFile() throws FileNotFoundException {
+    public void writeFile() throws NoSuchAlgorithmException, IOException {
         PrintWriter pw = new PrintWriter(
-                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + currentSHA);
+                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + currentSHA);
 
-        pw.print("Current: " + currentSHA + "\n");
+        pw.print(getTreeSHA() + "\n");
         if (prevSHA != null) {
             pw.print("Previous: " + prevSHA + "\n");
 
@@ -127,22 +149,23 @@ public class Commit {
 
         pw.close();
 
-        File head = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Head");
-        PrintWriter pw2 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Head");
-        pw2.print(currentSHA);
+        File head = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Head");
+        PrintWriter pw2 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Head");
+        pw2.print(currentCommitSHA());
         pw2.close();
 
-        PrintWriter pw3 = new PrintWriter("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+        // PrintWriter pw3 = new PrintWriter("/Users/lilbarbar/Desktop/Honors
+        // Topics/Programming-Git/Objects/Tree");
 
-        if (prevSHA != null) {
-            pw3.print("Tree: " + prevSHA + " (prev)");
-        } else {
-            pw3.print("Previous Tree: none");
+        // if (prevSHA != null) {
+        // pw3.print("Tree: " + prevSHA + " (prev)");
+        // } else {
+        // pw3.print("Previous Tree: none");
 
-        }
-        pw3.close();
+        // }
+        // pw3.close();
 
-        System.out.println(prevSHA + " " + currentSHA + " " + nextSHA);
+        // System.out.println(prevSHA + " " + currentSHA + " " + nextSHA);
 
     }
 
@@ -212,19 +235,60 @@ public class Commit {
 
     }
 
+    public Commit makeNextCommit(String author, String summary)
+            throws NoSuchAlgorithmException, IOException, Exception {
+
+        Commit newCom = new Commit(author, summary, currentCommitSHA());
+
+        nextSHA = newCom.currentCommitSHA();
+
+        writeFile();
+
+        return newCom;
+    }
+
     public String makeTree() throws NoSuchAlgorithmException, IOException {
         tree = new Tree();
+        currentSHA = tree.generateSHA1();
+
+
+        addTree();
+
         return tree.generateSHA1();
     }
 
+    public String getTreeSHA() throws NoSuchAlgorithmException {
+        return tree.generateSHA1();
+    }
+
+
+    public void addTree () throws NoSuchAlgorithmException, IOException
+    {
+        Tree t2 = new Tree (getTreeSHA());
+        File f = new File (inputString + "Objects/" + getTreeSHA());
+        PrintWriter pw = new PrintWriter(f);
+
+
+        File treeMain = new File (inputString + "Objects/Tree");
+        String s = Helper.fileContents(treeMain);
+
+        pw.print(s);
+
+    }
+
+    public String currentCommitSHA() throws NoSuchAlgorithmException, IOException {
+        currentSHA = generateSHA(currentTreeSHA + "\n" + prevSHA + nextSHA + author + getDate() + summary);
+        return currentSHA;
+    }
+
     public String shaToTree(String sha) throws Exception {
-        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + sha);
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + sha);
 
         String treeContents = getContents(file);
 
         int indexOfNewLine = treeContents.indexOf("\n");
 
-        return generateSHA(treeContents.substring(0, indexOfNewLine));
+        return generateSHA(treeContents.substring(0, 40));
 
     }
 
@@ -241,6 +305,117 @@ public class Commit {
         br.close();
         String s = record.toString();
         return s;
+    }
+
+
+
+    public  void checkout(String SHA) throws Exception {
+
+
+        
+
+
+        String treeSHA = shaToTree(SHA);
+        
+        
+        File treeFile = new File ("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + "Tree");
+
+        
+        
+        //String contents = Helper.fileContents(treeFile);
+
+        String input = inputString;
+
+
+
+         
+
+
+        //copied oline from Java Digital OCean
+
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(treeFile));
+			String line = reader.readLine();
+            File objects = new File (inputString + "Objects/");
+
+
+            String contents[] = objects.list();
+
+			while (line != null) {
+				System.out.println(line);
+
+                input = inputString;
+
+                if (line.contains ("Tree :"))
+                {
+                    String noType = line.substring(6);
+                    int indexOfColon = noType.indexOf(":");
+                    String hash = noType.substring(0,indexOfColon);
+                    String name = noType.substring(indexOfColon + 1);
+
+
+                    File file = new File (input + name);
+                    if (!file.exists())
+                    {
+                        file.mkdir();
+                    }
+
+
+                    input += name + "/";
+
+
+                    for (String s : contents)
+                    {
+                        if (s.contains(hash) || hash.contains(s))
+                        {
+                            File f2 = new File (input + s)
+
+                        }
+                    }
+
+
+
+
+                }
+                else
+                {
+                    String noType = line.substring(6);
+                    int indexOfColon = noType.indexOf(":");
+                    String hash = noType.substring(0,indexOfColon);
+                    String name = noType.substring(indexOfColon + 1);
+
+
+
+                
+
+                    for (String s : contents)
+                    {
+                        if (s.contains(hash) || hash.contains(s))
+                        {
+                            PrintWriter pw = new PrintWriter(input + name);
+                            String stuff = Helper.fileContents( new File (input + "Objects/" + hash) );
+                            pw.print(stuff);
+                            pw.close();
+
+                        }
+                    }
+
+                    
+                    
+                    
+
+
+                }
+				// read next line
+				line = reader.readLine();
+			}
+
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+
     }
 
 }

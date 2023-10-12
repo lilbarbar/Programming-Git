@@ -20,14 +20,18 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+//TESTS BLOBS 
+
 public class GitTest {
     public static Index index;
     static String[] expectedContents = { "some content in file 1", "some content in file 2", "some content in file 3" };
     static String[] expectedSha = { "2e27b4d29c63a1242ee02973f5862cf26cf9679f",
             "d98d670ea7ca145dee0266961b8bf8ee5b12925a", "0a9d1240f29014f6677816388f4763e7fdc41445" };
 
-    static String pathToObjectsFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
-    static String pathToIndexFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index";
+    static String pathToObjectsFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
+    static String pathToIndexFolder = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Index";
+
+    String inputString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
 
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
@@ -115,6 +119,9 @@ public class GitTest {
     @DisplayName("[1] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
         // check if the file index exists and the path to the objects folder exists
+
+        Blob b = new Blob("chiefkeef.txt");
+        Index i = new Index();
         File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
         Path path = Paths.get(pathToObjectsFolder);
         assertTrue(file.exists());
@@ -184,46 +191,43 @@ public class GitTest {
     void testAddTree() throws Exception {
         Tree tree = new Tree();
 
-        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
-        tree.add("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt");
+        tree.add("yo.txt", inputString);
+        tree.add("def.txt", inputString);
 
-        tree.save();
+        File treeFile = new File(inputString + "Objects/Tree");
+        String s = Helper.fileContents(treeFile);
+        assertTrue(s.contains("yo.txt"));
+        assertTrue(s.contains("def.txt"));
+        assertTrue(s.contains("Blob"));
 
-        StringBuilder sb = new StringBuilder("");
-        BufferedReader br = new BufferedReader(
-                new FileReader(pathToObjectsFolder + "" + "10f228098914b028963a208273e41be47b4f417d"));
-        while (br.ready()) {
-            sb.append((char) br.read());
-        }
-        br.close();
-        assertTrue(sb.toString().contains("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt"));
-        assertTrue(sb.toString().contains("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt"));
     }
 
     @Test
     @DisplayName("[6] Test if objects in trees are removed properly.")
     void testRemoveTree() throws Exception {
         Tree tree = new Tree();
+        File t = new File(inputString + "Objects/Tree");
 
-        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
-        tree.add("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt");
+        tree.add("abc.txt", inputString);
+        tree.add("chiefkeef.txt", inputString);
 
-        tree.remove("testFile1.txt");
-        tree.add("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt");
+        tree.add("jump.txt", inputString);
 
-        tree.remove("0a9d1240f29014f6677816388f4763e7fdc41445");
+        String string1 = Helper.fileContents(t);
 
-        tree.save();
+        assertTrue(string1.contains("jump.txt"));
+        assertTrue(string1.contains("abc.txt"));
+        assertTrue(string1.contains("chiefkeef.txt"));
 
-        StringBuilder sb = new StringBuilder("");
-        BufferedReader br = new BufferedReader(
-                new FileReader(pathToObjectsFolder + "/" + "6016cd7c79df2958d3bc74b3dee21c7fe994e592"));
-        while (br.ready()) {
-            sb.append((char) br.read());
-        }
-        br.close();
-        assertTrue(sb.toString().contains("blob : 2e27b4d29c63a1242ee02973f5862cf26cf9679f : testFile1.txt"));
-        assertTrue(!(sb.toString()).contains("blob : 0a9d1240f29014f6677816388f4763e7fdc41445 : testFile3.txt"));
+        tree.remove(inputString + "jump.txt");
+        tree.remove("bf66c9fecf6e0f873004b0ebeed29b7ad0761759");
+
+        String string2 = Helper.fileContents(t);
+
+        assertTrue(string2.contains("jump.txt"));
+        assertTrue(!string2.contains("abc.txt"));
+        assertTrue(string2.contains("chiefkeef.txt"));
+
     }
 
     // techiedelight.com

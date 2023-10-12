@@ -19,7 +19,14 @@ public class Blob {
 
     private String pathName;
 
+    String input = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
+
     public Blob(String name) {
+
+        File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+        if (!objects.exists()) {
+            objects.mkdir();
+        }
 
         this.pathName = name;
 
@@ -51,7 +58,7 @@ public class Blob {
         String blobFileName = getSha1(fileContents());
 
         PrintWriter pw = new PrintWriter(
-                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + blobFileName); // found
+                "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + blobFileName); // found
         // // out
         // // online
         // // from Java Oracle

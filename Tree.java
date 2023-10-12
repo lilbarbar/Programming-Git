@@ -15,23 +15,37 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class Tree {
-    private ArrayList<String> trees;
-    private ArrayList<String> blobs;
+    public ArrayList<String> trees;
+    public ArrayList<String> blobs;
     private int numberOfCommits;
+    private File pointedAtFolder;
+    private String startPath = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
+
+    File tree;
 
     public Tree() throws IOException {
 
-        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
-        if (!file.exists()) {
-            file.mkdir();
+        File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+        if (!objects.exists()) {
+            objects.mkdir();
         }
 
-        File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Index");
+        tree = new File(startPath + "Objects/Tree");
+        if (!tree.exists()) {
+            tree.createNewFile();
+        }
+
+        File file2 = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+        if (!file2.exists()) {
+            file2.mkdir();
+        }
+
+        File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Index");
         if (!index.exists()) {
             index.createNewFile();
         }
 
-        File treeIndex = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree");
+        File treeIndex = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Tree");
         if (!treeIndex.exists()) {
             treeIndex.createNewFile();
         }
@@ -41,10 +55,88 @@ public class Tree {
         this.trees = new ArrayList<String>();
     }
 
+    public Tree(String name) throws IOException {
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + name);
+        if (!file.exists()) {
+            file.createNewFile();
+
+        }
+
+        File objects = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+        if (!objects.exists()) {
+            objects.mkdir();
+        }
+
+        File index = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Index");
+        if (!index.exists()) {
+            index.createNewFile();
+        }
+
+        File treeIndex = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Tree");
+        if (!treeIndex.exists()) {
+            treeIndex.createNewFile();
+        }
+
+        this.numberOfCommits = 0;
+        this.blobs = new ArrayList<String>();
+        this.trees = new ArrayList<String>();
+
+    }
+
+    public void pointToFile(String folderName) {
+        File folder = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/CommitTester.java");
+        if (folder.isDirectory()) {
+
+        }
+    }
+
     // if type does not have "tree : " or "blob : " it must not be a valid string
     // input
     // if type contains "tree : " add it to the array list of trees and vice versa
-    public boolean add(String type) {
+    public boolean add(String fileName, String inputString) throws IOException, NoSuchAlgorithmException {
+
+        String type = fileName;
+        File fileToAdd = new File(inputString + fileName);
+
+        if (!fileToAdd.exists()) {
+            String isTree = fileName.substring(0, 6);
+            if (!isTree.equalsIgnoreCase("tree :")) {
+                throw new FileNotFoundException("Invalid file to add");
+            }
+
+        }
+
+        if (fileToAdd.exists() && fileToAdd.isFile()) {
+            String fileContents = Helper.fileContents(fileToAdd);
+            String hashOfFile = Blob.getSha1(fileContents);
+
+            String newEntryForTree = "Blob : " + hashOfFile + " : " + fileName;
+            blobs.add(newEntryForTree);
+
+            Blob b = new Blob(fileName);
+            b.makeFile();
+
+            System.out.println("test1...");
+
+        } else if (fileToAdd.isDirectory()) {
+            String folderContents = Helper.fileContents(fileToAdd);
+            String newEntryForTree = "Tree : " + Helper.getSHA1(folderContents) + " : " + fileName;
+
+            addDirectory(inputString + fileName + "/");
+
+        } else {
+            String newEntryForTree = fileName;
+            trees.add(newEntryForTree);
+        }
+
+        // entries.add(fileToAdd)
+
+        // the method accepts a filename, OR a tree string
+
+        // tree : HASH : folderName
+
+        writeTree();
+
         if (type.contains("tree : ") || type.contains("blob : ")) {
             if (type.contains("tree : ") && !trees.contains(type)) {
                 trees.add(type);
@@ -62,55 +154,50 @@ public class Tree {
     // loop through the trees
     // note that if type is a sha1 file, you must loop through both the trees and
     // the blob array list
-    public boolean remove(String type) {
+    public boolean remove(String name) throws IOException {
         // removes a blob with its name
-        if (type.contains(".txt")) {
-            String temp = "";
-            for (String s : blobs) {
-                temp = s.substring(50);
-                if (temp.equals(type)) {
-                    blobs.remove(s);
-                    return true;
-                } else {
-                    temp = "";
-                }
-            }
-        } else {
-            // removing a tree with its hash
-            String temp = "";
-            for (String s : trees) {
-                temp = s.substring(7);
-                if (temp.equals(type)) {
-                    trees.remove(s);
-                    return true;
-                } else {
-                    temp = "";
-                }
-            }
-            // trying to remove a blob with its hash
-            for (String s : blobs) {
-                temp = s.substring(7, 47);
-                System.out.println(temp);
-                if (temp.equals(type)) {
-                    blobs.remove(s);
-                    return true;
-                } else {
-                    temp = "";
-                }
-            }
 
+
+
+        for (int i = blobs.size()-1; i >= 0; i--)
+        {
+            if (blobs.get(i).indexOf (name) != -1)
+            {
+                blobs.remove(i);
+            }
         }
-        return false;
+        for (int i = trees.size()-1; i >= 0; i--)
+        {
+            if (trees.get(i).indexOf (name) != -1)
+            {
+                trees.remove(i);
+            }
+        }
+
+        // for (String s : blobs) {
+        //     if (s.contains(name)) {
+        //         blobs.remove(s);
+        //     }
+        // }
+
+        // for (String s : trees) {
+        //     if (s.contains(name)) {
+        //         trees.remove(s);
+        //     }
+        // }
+
+        writeTree();
+        return true;
     }
 
     public void save() throws Exception {
         if (numberOfCommits != calculateNumberOfCommits()) {
             numberOfCommits = calculateNumberOfCommits();
             String SHA1 = generateSHA1();
-            Path objectFilePath = Paths
-                    .get("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects", SHA1);
-            byte[] originalString = returnStringOfCommits().getBytes();
-            Files.write(objectFilePath, originalString);
+            Path objectFilePath = Paths.get("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects", SHA1);
+            String originalString = returnStringOfCommits();
+            byte[] originalSByte = originalString.getBytes();
+            Files.write(objectFilePath, originalSByte);
         } else {
             throw new Exception("Cannot save when you have not added a new tree or blob");
         }
@@ -169,7 +256,7 @@ public class Tree {
         StringBuilder resultStringBuilder = new StringBuilder();
         StringBuilder record = new StringBuilder("");
         BufferedReader br = new BufferedReader(
-                new FileReader("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/Tree"));
+                new FileReader("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/Tree"));
 
         while (br.ready()) {
             record.append((char) br.read());
@@ -181,9 +268,49 @@ public class Tree {
 
     }
 
+    public String allBlobs() {
+        String out = "";
+        for (String s : blobs) {
+            out += s;
+            out += "\n";
+        }
+
+        return out;
+
+    }
+
+    public String allTrees() {
+        String out = "";
+        for (String s : trees) {
+            out += s;
+            out += "\n";
+        }
+
+        return out;
+
+    }
+
+    public void writeTree() throws IOException {
+        String toWrite = allTrees() + allBlobs();
+        Helper.writeToFile(toWrite, "Tree", "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
+    }
+
     public String addDirectory(String directoryPath) throws NoSuchAlgorithmException, IOException {
         File directory = new File(directoryPath);
         if (directory.isDirectory()) {
+
+
+            ArrayList <String> blobsInternal = new ArrayList<>();
+            ArrayList <String> treesInternal = new ArrayList<>();
+
+
+
+            int len = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/".length();
+
+            String folderName = directoryPath.substring(len, directoryPath.length() - 1);
+
+            System.out.println(folderName);
+
             String contents[] = directory.list(); // gotten from internet -->
             // https://www.tutorialspoint.com/how-to-get-list-of-all-files-folders-from-a-folder-in-java#:~:text=The%20List()%20method,of%20the%20files%20and%20directories.
 
@@ -199,9 +326,12 @@ public class Tree {
 
                 if (!temp.isDirectory()) {
                     System.out.println("Blob...");
-                    Blob b1 = new Blob(directoryPath + s);
-                    output += "Blob : " + b1.getSha1(b1.fileContents()) + " : " + s + " \n";
                     System.out.println(s);
+                    Blob b1 = new Blob(directoryPath + s);
+                    b1.makeFile();
+                    output += "Blob : " + b1.getSha1(b1.fileContents()) + " : " + s + " \n";
+                    blobsInternal.add("Blob : " + b1.getSha1(b1.fileContents()) + " : " + s);
+                    
 
                 } else {
                     System.out.println("Tree...");
@@ -209,18 +339,45 @@ public class Tree {
                     Blob b2 = new Blob(directoryPath + s);
                     String childSHA = childTree.addDirectory(directoryPath + s + "/");
 
+                    System.out.println(s + "FR FR test");
+
                     output += "Tree : " + childSHA + " : " + s + "\n";
+                    blobsInternal.add("Tree : " + childSHA + " : " + s);
+
+
                 }
 
             }
 
             String outputSHA = Blob.getSha1(output);
+
+            StringBuilder sb = new StringBuilder("");
+            for (String s : treesInternal) {
+                sb.append(s);
+            }
+            for (String s : blobsInternal) {
+                sb.append(s);
+            }
+        String input = sb.toString();
+        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+        byte[] result = mDigest.digest(input.getBytes());
+        StringBuffer sbuffer = new StringBuffer();
+        for (int i = 0; i < result.length; i++) {
+            sbuffer.append(Integer.toString((result[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        outputSHA = sbuffer.toString();
+
+
+
+            
             PrintWriter pw = new PrintWriter(
-                    "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + outputSHA);
+                    "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA);
             pw.print(output);
             pw.close();
 
-            return Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/" + outputSHA);
+            trees.add("Tree : " + outputSHA + " : " + folderName);
+
+            return Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA);
 
         }
         return null;

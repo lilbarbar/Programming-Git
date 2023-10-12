@@ -12,12 +12,16 @@ import org.junit.jupiter.api.Test;
 
 public class FinalCommitTest {
 
+
+
+    String inputString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
+
     @BeforeAll
     static void setUpBeforeAll() throws IOException {
-        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/");
+        File file = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/");
         if (file.exists()) {
 
-            String pString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+            String pString = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
             Path p = Paths.get(pString);
             // Files.delete(p);
 
@@ -61,18 +65,18 @@ public class FinalCommitTest {
         c.commitFile();
         c.writeFile();
 
-        c.tree.add("yo.txt");
-        c.tree.add("jump.txt");
-        c.tree.add("testout.txt");
-        c.tree.add("Hehe");
+        c.tree.add("yo.txt", inputString);
+        c.tree.add("jump.txt", inputString);
+        c.tree.add("testout.txt" , inputString);
+        c.tree.add("Hehe" , inputString);
         c.commitFile();
         c.writeFile();
 
         c.seePrev();
         c.writeFile();
 
-        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects");
-        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects");
+        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
 
         String contents[] = directory.list();
 
@@ -97,8 +101,8 @@ public class FinalCommitTest {
         c.commitFile();
         c.writeFile();
 
-        c.tree.add("yo.txt");
-        c.tree.add("jump.txt");
+        c.tree.add("yo.txt" , inputString);
+        c.tree.add("jump.txt" , inputString);
 
         c.commitFile();
         c.writeFile();
@@ -106,8 +110,8 @@ public class FinalCommitTest {
         c.seePrev();
         c.writeFile();
 
-        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects");
-        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects");
+        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
 
         String contents[] = directory.list();
 
@@ -129,9 +133,9 @@ public class FinalCommitTest {
         c2.commitFile();
         c2.writeFile();
 
-        c2.tree.add("tesout.txt");
-        c2.tree.add("Hehe");
-        c2.tree.add("FolderB");
+        c2.tree.add("testout.txt" , inputString);
+        c2.tree.add("Hehe", inputString);
+        c2.tree.add("FolderB", inputString);
 
         c2.commitFile();
         c2.writeFile();
@@ -160,13 +164,13 @@ public class FinalCommitTest {
         Commit c1 = new Commit("Billy", "W Billy Commit!");
         c1.commitFile();
         c1.writeFile();
-        c1.tree.add("abc.txt");
-        c1.tree.add("def.txt");
+        c1.tree.add("abc.txt", inputString);
+        c1.tree.add("def.txt", inputString);
         c1.commitFile();
         c1.writeFile();
 
-        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects");
-        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Tree-Objects/";
+        File directory = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects");
+        String start = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/";
 
         String contents[] = directory.list();
 
@@ -185,8 +189,8 @@ public class FinalCommitTest {
         Commit c2 = new Commit("Billy", "W Billy Commit!");
         c2.commitFile();
         c2.writeFile();
-        c2.tree.add("jump.txt");
-        c2.tree.add("lmap.txt");
+        c2.tree.add("jump.txt", inputString);
+        c2.tree.add("lmao.txt", inputString);
         c2.commitFile();
         c2.writeFile();
 
@@ -207,9 +211,9 @@ public class FinalCommitTest {
         Commit c3 = new Commit("Billy", "W Billy Commit!");
         c3.commitFile();
         c3.writeFile();
-        c3.tree.add("yo.txt");
-        c3.tree.add("chiefkeef.txt");
-        c3.tree.add("FolderB");
+        c3.tree.add("yo.txt", inputString);
+        c3.tree.add("chiefkeef.txt", inputString);
+        c3.tree.add("FolderB", inputString);
         c3.commitFile();
         c3.writeFile();
 
@@ -231,9 +235,9 @@ public class FinalCommitTest {
 
         c4.commitFile();
         c4.writeFile();
-        c4.tree.add("testout.txt");
-        c4.tree.add("Hehe");
-        c4.tree.add("FolderA");
+        c4.tree.add("testout.txt", inputString);
+        c4.tree.add("Hehe", inputString);
+        c4.tree.add("FolderA", inputString);
         c4.commitFile();
         c4.writeFile();
 
