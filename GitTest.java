@@ -219,12 +219,12 @@ public class GitTest {
         assertTrue(string1.contains("abc.txt"));
         assertTrue(string1.contains("chiefkeef.txt"));
 
-        tree.remove(inputString + "jump.txt");
+        tree.remove("jump.txt");
         tree.remove("bf66c9fecf6e0f873004b0ebeed29b7ad0761759");
 
         String string2 = Helper.fileContents(t);
 
-        assertTrue(string2.contains("jump.txt"));
+        assertTrue(!string2.contains("jump.txt"));
         assertTrue(!string2.contains("abc.txt"));
         assertTrue(string2.contains("chiefkeef.txt"));
 

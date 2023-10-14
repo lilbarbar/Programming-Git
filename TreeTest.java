@@ -58,19 +58,54 @@ public class TreeTest {
     void testAddDirectory() throws NoSuchAlgorithmException, IOException {
 
         Tree tree = new Tree();
+        File treeFile = new File(input + "Objects/Tree");
+
         File d = new File("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/FolderA/");
         if (d.exists()) {
             tree.addDirectory("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/FolderA/");
         }
 
 
+        tree.add("FolderA", input);
+
+        String s = Helper.fileContents(treeFile);
+
+
+
+
         
         assertTrue (tree.blobs.size() > 0 || tree.trees.size() > 0);
+        assertEquals (s.contains("FolderA"), true);
 
     }
 
     @Test
-    void testAdd() {
+    void testAdd() throws IOException, NoSuchAlgorithmException {
+
+
+        Tree tree = new Tree ();
+        File treeFile = new File(input + "Objects/Tree");
+
+
+        tree.add("def.txt", input);
+
+        String s = Helper.fileContents(treeFile);
+
+
+        assertEquals(s.indexOf("def.txt") >= 0, true);
+
+ 
+
+        // Tree tree = new Tree();
+
+        // tree.add("yo.txt", inputString);
+        // tree.add("def.txt", inputString);
+
+        // String s = Helper.fileContents(treeFile);
+        // assertTrue(s.contains("yo.txt"));
+        // assertTrue(s.contains("def.txt"));
+        // assertTrue(s.contains("Blob"));
+
 
     }
 
@@ -88,49 +123,42 @@ public class TreeTest {
 
     }
 
-    @Test
-    void testAllContents() {
+    
 
-    }
+    
 
-    @Test
-    void testAllTrees() {
-
-    }
+  
 
     @Test
-    void testCalculateNumberOfCommits() {
+    void testRemove() throws IOException, NoSuchAlgorithmException {
 
+
+        Tree tree = new Tree();
+        File t = new File(input + "Objects/Tree");
+
+        tree.add("abc.txt", input);
+        tree.add("chiefkeef.txt", input);
+
+        tree.add("jump.txt", input);
+
+        String string1 = Helper.fileContents(t);
+
+        assertTrue(string1.contains("jump.txt"));
+        assertTrue(string1.contains("abc.txt"));
+        assertTrue(string1.contains("chiefkeef.txt"));
+
+        tree.remove("jump.txt");
+        tree.remove("bf66c9fecf6e0f873004b0ebeed29b7ad0761759");
+
+        String string2 = Helper.fileContents(t);
+
+        assertTrue(!string2.contains("jump.txt"));
+        assertTrue(!string2.contains("abc.txt"));
+        assertTrue(string2.contains("chiefkeef.txt"));
     }
 
-    @Test
-    void testGenerateSHA1() {
 
-    }
 
-    @Test
-    void testPointToFile() {
-
-    }
-
-    @Test
-    void testRemove() {
-
-    }
-
-    @Test
-    void testReturnStringOfCommits() {
-
-    }
-
-    @Test
-    void testSave() {
-
-    }
-
-    @Test
-    void testWriteTree() {
-
-    }
+    
 
 }

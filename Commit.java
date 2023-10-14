@@ -309,16 +309,40 @@ public class Commit {
 
 
 
-    public  void checkout(String SHA) throws Exception {
 
+    public static void createFile()
+    {
+
+    }
+
+
+    public static void createFolder()
+    {
+
+    }
+
+
+
+
+    public  static void checkout(String SHA) throws Exception {
+
+        File commitFile = new File (inputString + "Objects/" + SHA);
 
         
 
 
-        String treeSHA = shaToTree(SHA);
+        String treeFileName =    Helper.fileContents(commitFile).substring (0,40);   
+
+
+
+
+
         
-        
-        File treeFile = new File ("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + "Tree");
+
+        File treeFile = new File (inputString + "Objects/" + treeFileName);
+
+        File mainTree = new File (inputString + "Objects/Tree");
+
 
         
         
@@ -329,6 +353,8 @@ public class Commit {
 
 
          
+
+
 
 
         //copied oline from Java Digital OCean

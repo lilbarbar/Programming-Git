@@ -17,7 +17,6 @@ public class CommitTester3 {
 
         c3.writeFile();
 
-        c3.checkout("c3fc1720e9a5e6c46c4eee8799ec58132b35b189");
 
     }
 

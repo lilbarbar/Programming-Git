@@ -14,13 +14,15 @@ public class TreeTester2 {
         tree.remove("896c3840f9e63d1d245943215077a29aeaf9e41c");
 
 
-        tree.add("FolderA", input);
         tree.add("FolderB", input);
 
         
 
-        System.out.println(tree.allContents());
 
+
+
+
+        tree.generateBlob();
     }
 
 }

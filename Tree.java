@@ -116,11 +116,14 @@ public class Tree {
             Blob b = new Blob(fileName);
             b.makeFile();
 
-            System.out.println("test1...");
 
         } else if (fileToAdd.isDirectory()) {
             String folderContents = Helper.fileContents(fileToAdd);
             String newEntryForTree = "Tree : " + Helper.getSHA1(folderContents) + " : " + fileName;
+
+
+            System.out.println("Added " + fileName);
+
 
             addDirectory(inputString + fileName + "/");
 
@@ -188,6 +191,14 @@ public class Tree {
 
         writeTree();
         return true;
+    }
+
+
+    public void generateBlob () throws NoSuchAlgorithmException, IOException
+    {
+        Blob blob = new Blob ("Tree");
+        blob.makeFile();
+        
     }
 
     public void save() throws Exception {
@@ -317,32 +328,39 @@ public class Tree {
             String output = "";
 
             for (String s : contents) {
-                System.out.println("String output: " + s);
                 File temp = new File(directoryPath + s);
-                System.out.println(s + " is a directory? " + temp.isDirectory());
 
                 // char sLast = s.charAt(s.length() - 1);
                 // Path p = Paths.get(s);
 
                 if (!temp.isDirectory()) {
-                    System.out.println("Blob...");
-                    System.out.println(s);
+                    
                     Blob b1 = new Blob(directoryPath + s);
                     b1.makeFile();
                     output += "Blob : " + b1.getSha1(b1.fileContents()) + " : " + s + " \n";
                     blobsInternal.add("Blob : " + b1.getSha1(b1.fileContents()) + " : " + s);
+
+
+                    System.out.println("Blob Sha : " + b1.getSha1(b1.fileContents()));
+
+
+
                     
 
                 } else {
-                    System.out.println("Tree...");
                     Tree childTree = new Tree();
                     Blob b2 = new Blob(directoryPath + s);
                     String childSHA = childTree.addDirectory(directoryPath + s + "/");
 
-                    System.out.println(s + "FR FR test");
+
+                    System.out.println("Subtree Sha: " + childSHA);
+
 
                     output += "Tree : " + childSHA + " : " + s + "\n";
                     blobsInternal.add("Tree : " + childSHA + " : " + s);
+
+
+                    
 
 
                 }
@@ -367,9 +385,13 @@ public class Tree {
         }
         outputSHA = sbuffer.toString();
 
+        outputSHA = Blob.getSha1(output);
 
 
-            
+
+
+
+
             PrintWriter pw = new PrintWriter(
                     "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA);
             pw.print(output);
@@ -377,7 +399,12 @@ public class Tree {
 
             trees.add("Tree : " + outputSHA + " : " + folderName);
 
-            return Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA);
+
+            System.out.println("Done " + Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA));
+
+
+            String oldOutput = Blob.getSha1("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/Objects/" + outputSHA);
+            return outputSHA;
 
         }
         return null;
