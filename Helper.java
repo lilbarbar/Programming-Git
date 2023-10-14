@@ -78,6 +78,7 @@ public interface Helper {
             pw.print(s);
             pw.close();
 
+            System.out.println("done");
         } catch (Exception e) {
 
         }
