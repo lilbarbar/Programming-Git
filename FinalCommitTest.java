@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
@@ -253,6 +254,75 @@ public class FinalCommitTest {
 
         }
         assertEquals(goodFiles > 0, true);
+
+    }
+
+    @Test
+    void testCheckout() throws Exception {
+
+        Commit c1 = new Commit("Bari", "Hehe");
+
+      
+
+        Commit c2 = c1.makeNextCommit("Bari", "Hehe2");
+
+        Commit c3 = c2.makeNextCommit("Bari", "Hehe3");
+        
+
+        File folderA = new File ("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/ FolderA");
+        File folderB = new File ("/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/FolderB");
+
+
+        System.out.println(folderA.exists());
+
+        
+
+
+        c3.tree.add("FolderA", "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/");
+
+        c3.tree.add("FolderB", "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/");
+        c3.tree.add("abc.txt", "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/");
+
+
+
+
+
+
+
+
+        c3.writeFile();
+
+
+
+        
+
+
+        if (folderA.exists())
+        {
+            folderA.delete();
+
+
+
+        }
+
+        if (folderB.exists())
+        {
+            folderB.delete();
+
+
+        }
+
+
+        //folderB.delete();
+
+
+
+        c3.checkout("8408e54a487bd39e8cffcec1d0e632b6d7ddfa6e");
+
+        assertTrue (folderA.exists());
+        assertTrue (folderB.exists());
+
+
 
     }
 }

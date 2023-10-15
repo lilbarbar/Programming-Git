@@ -194,10 +194,14 @@ public class Tree {
     }
 
 
-    public void generateBlob () throws NoSuchAlgorithmException, IOException
+    public String generateBlob () throws NoSuchAlgorithmException, IOException
     {
-        Blob blob = new Blob ("Tree");
+
+        File tree = new File (startPath + "Objects/Tree");
+        Blob blob = new Blob (startPath + "Objects/Tree");
         blob.makeFile();
+
+        return Blob.getSha1(Helper.fileContents(tree));
         
     }
 

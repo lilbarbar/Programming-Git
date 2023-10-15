@@ -249,16 +249,12 @@ public class Commit {
 
     public String makeTree() throws NoSuchAlgorithmException, IOException {
         tree = new Tree();
-        currentSHA = tree.generateSHA1();
-
-
-        addTree();
-
-        return tree.generateSHA1();
+        
+        return tree.generateBlob();
     }
 
-    public String getTreeSHA() throws NoSuchAlgorithmException {
-        return tree.generateSHA1();
+    public String getTreeSHA() throws NoSuchAlgorithmException, IOException {
+        return tree.generateBlob();
     }
 
 
@@ -310,14 +306,103 @@ public class Commit {
 
 
 
-    public static void createFile()
+    public static void createFile(String name)
     {
 
+        
     }
 
 
-    public static void createFolder()
+    public static void createFolder(String fileName, String sha) throws IOException
     {
+
+        File folder = new File (fileName);
+        
+            folder.mkdirs();
+        
+
+
+        String input = fileName + "/";
+
+        File blobFile = new File (inputString + "Objects/" + sha);
+
+
+        if (blobFile.exists())
+        {
+
+            BufferedReader reader = new BufferedReader(new FileReader(blobFile));
+			String line = reader.readLine();
+            File objects = new File (inputString + "Objects/");
+
+
+            String contents[] = objects.list();
+
+			while (line != null) {
+				System.out.println(line);
+
+                // input = inputString;
+
+                if (line.contains ("Tree :"))
+                {
+                    String noType = line.substring(6);
+                    int indexOfColon = noType.indexOf(":");
+                    String hash = noType.substring(0,indexOfColon);
+                    String name = noType.substring(indexOfColon + 1);
+
+
+                    for (String s : contents)
+                    {
+                        if (s.contains(hash) || hash.contains(s))
+                        {
+                            createFolder(input + name, s);
+
+                        }
+                    }
+
+
+
+                }
+                else
+                {
+                    String noType = line.substring(6);
+                    int indexOfColon = noType.indexOf(":");
+                    String hash = noType.substring(0,indexOfColon);
+                    String name = noType.substring(indexOfColon + 1);
+
+
+                
+
+                    for (String s : contents)
+                    {
+                        if (s.contains(hash) || hash.contains(s))
+                        {
+                            PrintWriter pw = new PrintWriter(input + name);
+
+                            File f = new File (inputString + "Objects/" + s);
+                            String stuff = Helper.fileContents(  f);
+                            pw.print(stuff);
+                            pw.close();
+
+                        }
+                    }
+
+                    
+                    
+                    
+
+
+                }
+				// read next line
+				line = reader.readLine();
+			}
+
+			reader.close();
+
+        }
+
+
+        
+
 
     }
 
@@ -348,8 +433,7 @@ public class Commit {
         
         //String contents = Helper.fileContents(treeFile);
 
-        String input = inputString;
-
+        String input = "/Users/lilbarbar/Desktop/Honors Topics/Programming-Git/";
 
 
          
@@ -380,25 +464,14 @@ public class Commit {
                     String name = noType.substring(indexOfColon + 1);
 
 
-                    File file = new File (input + name);
-                    if (!file.exists())
-                    {
-                        file.mkdir();
-                    }
-
-
-                    input += name + "/";
-
-
                     for (String s : contents)
                     {
                         if (s.contains(hash) || hash.contains(s))
                         {
-                            File f2 = new File (input + s)
+                            createFolder(input + name, s);
 
                         }
                     }
-
 
 
 
@@ -411,7 +484,6 @@ public class Commit {
                     String name = noType.substring(indexOfColon + 1);
 
 
-
                 
 
                     for (String s : contents)
@@ -419,7 +491,10 @@ public class Commit {
                         if (s.contains(hash) || hash.contains(s))
                         {
                             PrintWriter pw = new PrintWriter(input + name);
-                            String stuff = Helper.fileContents( new File (input + "Objects/" + hash) );
+
+                            File f = new File (inputString + "Objects/" + s);
+                            System.out.println(s);
+                            String stuff = Helper.fileContents(f);
                             pw.print(stuff);
                             pw.close();
 
